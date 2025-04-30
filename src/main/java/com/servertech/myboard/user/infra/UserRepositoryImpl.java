@@ -5,6 +5,8 @@ import com.servertech.myboard.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
@@ -16,7 +18,7 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
-	public User findByEmail(String email) {
-		return userRepository.findByEmail(email).orElse(null);
+	public Optional<User> findByEmail(String email) {
+		return userRepository.findByEmail(email);
 	}
 }

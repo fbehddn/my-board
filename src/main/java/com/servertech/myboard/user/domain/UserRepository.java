@@ -1,6 +1,8 @@
 package com.servertech.myboard.user.domain;
 
+import java.util.Optional;
+
 public interface UserRepository {
 	void save(User user);
-	User findByEmail(String email);
+	Optional<User> findByEmail(String email);
 }
