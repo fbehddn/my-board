@@ -40,7 +40,7 @@ public class UserService {
 			.build();
 	}
 
-	public UserDetailResponse myPage() {
-		return null;
+	public UserDetailResponse getUserDetail(User user) {
+		return UserDetailResponse.from(user);
 	}
 }
