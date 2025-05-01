@@ -1,4 +1,4 @@
-package com.servertech.myboard.jwt;
+package com.servertech.myboard.config.jwt;
 
 
 import lombok.AllArgsConstructor;

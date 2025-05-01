@@ -1,6 +1,6 @@
 package com.servertech.myboard.user.application.service;
 
-import com.servertech.myboard.jwt.JwtProvider;
+import com.servertech.myboard.config.jwt.JwtProvider;
 import com.servertech.myboard.user.application.dto.response.JwtResponse;
 import com.servertech.myboard.user.application.dto.response.UserDetailResponse;
 import com.servertech.myboard.user.application.dto.request.UserCreateRequest;
@@ -8,8 +8,6 @@ import com.servertech.myboard.user.application.dto.request.UserLoginRequest;
 import com.servertech.myboard.user.domain.User;
 import com.servertech.myboard.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
