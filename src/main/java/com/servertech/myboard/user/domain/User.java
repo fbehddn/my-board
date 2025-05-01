@@ -22,7 +22,7 @@ public class User implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String email;
 
 	@Column(nullable = false)
@@ -46,21 +46,21 @@ public class User implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return UserDetails.super.isAccountNonExpired();
+		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return UserDetails.super.isAccountNonLocked();
+		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return UserDetails.super.isCredentialsNonExpired();
+		return true;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return UserDetails.super.isEnabled();
+		return true;
 	}
 }

@@ -5,7 +5,9 @@ import com.servertech.myboard.user.application.dto.request.UserLoginRequest;
 import com.servertech.myboard.user.application.dto.response.JwtResponse;
 import com.servertech.myboard.user.application.dto.response.UserDetailResponse;
 import com.servertech.myboard.user.application.service.UserService;
+import com.servertech.myboard.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,7 +27,7 @@ public class UserController {
 	}
 
 	@GetMapping("/my")
-	public UserDetailResponse myPage() {
-		return userService.myPage();
+	public UserDetailResponse myPage(@AuthenticationPrincipal User user) {
+		return userService.getUserDetail(user);
 	}
 }
