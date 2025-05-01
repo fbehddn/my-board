@@ -33,7 +33,7 @@ public class UserService {
 			throw new IllegalArgumentException("Wrong password");
 		}
 
-		String token = jwtProvider.generateToken(user.getId());
+		String token = jwtProvider.generateToken(user.getEmail());
 
 		return JwtResponse.builder()
 			.accessToken(token)

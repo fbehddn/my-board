@@ -24,12 +24,12 @@ public class JwtProvider {
 	private final static String HEADER_AUTHORIZATION = "Authorization";
 	private final static String TOKEN_PREFIX = "Bearer ";
 
-	public String generateToken(Long id) {
+	public String generateToken(String email) {
 		Date now = new Date();
-		return makeToken(new Date(now.getTime() + Duration.ofHours(1).toMillis()), id);
+		return makeToken(new Date(now.getTime() + Duration.ofHours(1).toMillis()), email);
 	}
 
-	private String makeToken(Date expiry, Long id) {
+	private String makeToken(Date expiry, String email) {
 		Date now = new Date();
 
 		return Jwts.builder()
@@ -37,7 +37,7 @@ public class JwtProvider {
 			.setIssuer(jwtProperties.getIssuer())
 			.setIssuedAt(now)
 			.setExpiration(expiry)
-			.setSubject(id.toString())
+			.setSubject(email)
 			.signWith(HS256, jwtProperties.getSecretKey())
 			.compact();
 	}
