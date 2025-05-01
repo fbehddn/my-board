@@ -1,5 +1,6 @@
 package com.servertech.myboard.user.domain;
 
+import com.servertech.myboard.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Getter
-public class User implements UserDetails {
+public class User extends BaseTimeEntity implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
