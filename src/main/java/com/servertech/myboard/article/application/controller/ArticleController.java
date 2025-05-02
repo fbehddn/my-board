@@ -7,6 +7,8 @@ import com.servertech.myboard.article.application.dto.response.ArticleDetailResp
 import com.servertech.myboard.article.application.dto.response.ArticleListResponse;
 import com.servertech.myboard.article.application.dto.response.ArticleResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,27 +18,32 @@ public class ArticleController {
 	private final ArticleFacade articleFacade;
 
 	@GetMapping
-	public ArticleListResponse getArticles() {
-		return articleFacade.findAll();
+	public ResponseEntity<ArticleListResponse> getArticles() {
+		ArticleListResponse response = articleFacade.findAll();
+		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping
-	public ArticleResponse createArticle(@RequestBody CreateArticleRequest request) {
-		return articleFacade.save(request);
+	public ResponseEntity<ArticleResponse> createArticle(@RequestBody CreateArticleRequest request) {
+		ArticleResponse response = articleFacade.save(request);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@GetMapping("/{id}")
-	public ArticleDetailResponse getArticle(@PathVariable Long id) {
-		return articleFacade.find(id);
+	public ResponseEntity<ArticleDetailResponse> getArticle(@PathVariable Long id) {
+		ArticleDetailResponse response = articleFacade.find(id);
+		return ResponseEntity.ok(response);
 	}
 
 	@DeleteMapping("/{id}")
-	public void deleteArticle(@PathVariable Long id) {
+	public ResponseEntity<Void> deleteArticle(@PathVariable Long id) {
 		articleFacade.deleteArticle(id);
+		return ResponseEntity.noContent().build();
 	}
 
 	@PatchMapping("/{id}")
-	public void updateArticle(@PathVariable Long id, @RequestBody UpdateArticleRequest request) {
+	public ResponseEntity<Void> updateArticle(@PathVariable Long id, @RequestBody UpdateArticleRequest request) {
 		articleFacade.updateArticle(id, request);
+		return ResponseEntity.noContent().build();
 	}
 }
