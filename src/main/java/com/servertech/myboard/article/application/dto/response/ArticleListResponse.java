@@ -6,9 +6,9 @@ import java.util.List;
 
 @Builder
 public record ArticleListResponse(
-	List<ArticleDetailResponse> articles
+	List<ArticleResponse> articles
 ) {
-	public static ArticleListResponse from(List<ArticleDetailResponse> articles) {
+	public static ArticleListResponse from(List<ArticleResponse> articles) {
 		return ArticleListResponse.builder()
 			.articles(articles)
 			.build();

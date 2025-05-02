@@ -4,6 +4,7 @@ import com.servertech.myboard.article.application.dto.response.ArticleDetailResp
 import com.servertech.myboard.article.application.dto.response.ArticleListResponse;
 import com.servertech.myboard.article.application.dto.request.CreateArticleRequest;
 import com.servertech.myboard.article.application.dto.request.UpdateArticleRequest;
+import com.servertech.myboard.article.application.dto.response.ArticleResponse;
 import com.servertech.myboard.article.domain.Article;
 import com.servertech.myboard.article.domain.ArticleRepository;
 import com.servertech.myboard.user.domain.User;
@@ -24,7 +25,7 @@ public class ArticleService {
 
 	public ArticleListResponse findAll() {
 		List<Article> articles = articleRepository.findAll();
-		List<ArticleDetailResponse> responses = articles.stream().map(ArticleDetailResponse::from).toList();
+		List<ArticleResponse> responses = articles.stream().map(ArticleResponse::from).toList();
 
 		return ArticleListResponse.from(responses);
 	}
