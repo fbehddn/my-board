@@ -1,7 +1,7 @@
-package com.servertech.myboard.config;
+package com.servertech.myboard.global.config;
 
-import com.servertech.myboard.config.jwt.JwtAuthenticationFilter;
-import com.servertech.myboard.config.jwt.JwtProvider;
+import com.servertech.myboard.auth.infra.jwt.JwtAuthenticationFilter;
+import com.servertech.myboard.auth.infra.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

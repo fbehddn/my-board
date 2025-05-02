@@ -1,4 +1,4 @@
-package com.servertech.myboard.common;
+package com.servertech.myboard.global;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;

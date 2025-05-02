@@ -1,4 +1,4 @@
-package com.servertech.myboard.config.jwt;
+package com.servertech.myboard.auth.infra.jwt;
 
 
 import lombok.AllArgsConstructor;

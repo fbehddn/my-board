@@ -1,4 +1,4 @@
-package com.servertech.myboard.config;
+package com.servertech.myboard.global.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
