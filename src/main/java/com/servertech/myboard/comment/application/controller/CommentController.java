@@ -25,9 +25,10 @@ public class CommentController {
 		return commentService.find(id);
 	}
 
-	@PostMapping
-	public CommentResponse createComment(@RequestBody CreateCommentRequest request) {
-		return commentService.create(request);
+	@PostMapping("/articles/{articleId}/comments")
+	public CommentResponse createComment(@PathVariable Long articleId,
+										 @RequestBody CreateCommentRequest request) {
+		return commentService.create(articleId, request);
 	}
 
 	@PatchMapping("/{id}")

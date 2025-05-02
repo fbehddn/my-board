@@ -9,9 +9,6 @@ public record CreateArticleRequest(
 	String title,
 
 	@Schema(description = "게시글 내용", example = "이러다가 시즌 꼴등하겠습니다 ^^")
-	String content,
-
-	@Schema(description = "작성자", example = "Cole Palmer")
-	String author
+	String content
 ) {
 }
