@@ -1,4 +1,4 @@
-package com.servertech.myboard.config.jwt;
+package com.servertech.myboard.auth.infra.jwt;
 
 import static io.jsonwebtoken.Header.JWT_TYPE;
 import static io.jsonwebtoken.Header.TYPE;

@@ -1,7 +1,7 @@
 package com.servertech.myboard.comment.domain;
 
 import com.servertech.myboard.article.domain.Article;
-import com.servertech.myboard.common.BaseTimeEntity;
+import com.servertech.myboard.global.BaseTimeEntity;
 import com.servertech.myboard.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

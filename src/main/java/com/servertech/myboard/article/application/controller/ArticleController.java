@@ -1,44 +1,49 @@
 package com.servertech.myboard.article.application.controller;
 
-import com.servertech.myboard.article.application.service.ArticleService;
+import com.servertech.myboard.article.application.ArticleFacade;
 import com.servertech.myboard.article.application.dto.request.CreateArticleRequest;
 import com.servertech.myboard.article.application.dto.request.UpdateArticleRequest;
 import com.servertech.myboard.article.application.dto.response.ArticleDetailResponse;
 import com.servertech.myboard.article.application.dto.response.ArticleListResponse;
 import com.servertech.myboard.article.application.dto.response.ArticleResponse;
-import com.servertech.myboard.article.domain.Article;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/articles")
 public class ArticleController {
-	private final ArticleService articleService;
+	private final ArticleFacade articleFacade;
 
 	@GetMapping
-	public ArticleListResponse getArticles() {
-		return articleService.findAll();
+	public ResponseEntity<ArticleListResponse> getArticles() {
+		ArticleListResponse response = articleFacade.findAll();
+		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping
-	public ArticleResponse createArticle(@RequestBody CreateArticleRequest request) {
-		Article savedArticle = articleService.save(request);
-		return ArticleResponse.from(savedArticle);
+	public ResponseEntity<ArticleResponse> createArticle(@RequestBody CreateArticleRequest request) {
+		ArticleResponse response = articleFacade.save(request);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@GetMapping("/{id}")
-	public ArticleDetailResponse getArticle(@PathVariable Long id) {
-		return articleService.find(id);
+	public ResponseEntity<ArticleDetailResponse> getArticle(@PathVariable Long id) {
+		ArticleDetailResponse response = articleFacade.find(id);
+		return ResponseEntity.ok(response);
 	}
 
 	@DeleteMapping("/{id}")
-	public void deleteArticle(@PathVariable Long id) {
-		articleService.deleteArticle(id);
+	public ResponseEntity<Void> deleteArticle(@PathVariable Long id) {
+		articleFacade.deleteArticle(id);
+		return ResponseEntity.noContent().build();
 	}
 
 	@PatchMapping("/{id}")
-	public void updateArticle(@PathVariable Long id, @RequestBody UpdateArticleRequest request) {
-		articleService.updateArticle(id, request);
+	public ResponseEntity<Void> updateArticle(@PathVariable Long id, @RequestBody UpdateArticleRequest request) {
+		articleFacade.updateArticle(id, request);
+		return ResponseEntity.noContent().build();
 	}
 }

@@ -4,9 +4,11 @@ import com.servertech.myboard.user.application.dto.request.UserCreateRequest;
 import com.servertech.myboard.user.application.dto.request.UserLoginRequest;
 import com.servertech.myboard.user.application.dto.response.JwtResponse;
 import com.servertech.myboard.user.application.dto.response.UserDetailResponse;
-import com.servertech.myboard.user.application.service.UserService;
+import com.servertech.myboard.user.application.UserFacade;
 import com.servertech.myboard.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,20 +16,23 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
-	private final UserService userService;
+	private final UserFacade userFacade;
 
 	@PostMapping("/signup")
-	public void create(@RequestBody UserCreateRequest request) {
-		userService.create(request);
+	public ResponseEntity<Void> create(@RequestBody UserCreateRequest request) {
+		userFacade.create(request);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	@PostMapping("/login")
-	public JwtResponse login(@RequestBody UserLoginRequest request) {
-		return userService.login(request);
+	public ResponseEntity<JwtResponse> login(@RequestBody UserLoginRequest request) {
+		JwtResponse response = userFacade.login(request);
+		return ResponseEntity.ok().body(response);
 	}
 
 	@GetMapping("/my")
-	public UserDetailResponse myPage(@AuthenticationPrincipal User user) {
-		return userService.getUserDetail(user);
+	public ResponseEntity<UserDetailResponse> myPage(@AuthenticationPrincipal User user) {
+		UserDetailResponse response = userFacade.getUserDetail(user);
+		return ResponseEntity.ok().body(response);
 	}
 }

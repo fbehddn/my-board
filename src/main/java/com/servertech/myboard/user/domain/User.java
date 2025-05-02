@@ -2,7 +2,7 @@ package com.servertech.myboard.user.domain;
 
 import com.servertech.myboard.article.domain.Article;
 import com.servertech.myboard.comment.domain.Comment;
-import com.servertech.myboard.common.BaseTimeEntity;
+import com.servertech.myboard.global.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 import java.util.List;
@@ -46,6 +47,10 @@ public class User extends BaseTimeEntity implements UserDetails {
 			.password(password)
 			.username(username)
 			.build();
+	}
+
+	public boolean isPasswordMatch(String rawPassword, PasswordEncoder encoder) {
+		return encoder.matches(rawPassword, this.password);
 	}
 
 	@Override
