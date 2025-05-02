@@ -26,16 +26,10 @@ public class CommentService {
 	private final UserRepository userRepository;
 	private final ArticleRepository articleRepository;
 
-	public CommentListResponse findAll() {
-		List<Comment> comments = commentRepository.findAll();
-		List<CommentDetailResponse> responses = comments.stream().map(CommentDetailResponse::from).toList();
-
-		return CommentListResponse.from(responses);
-	}
-
-	public CommentDetailResponse find(Long id) {
-		Comment comment = commentRepository.findById(id);
-		return CommentDetailResponse.from(comment);
+	public CommentListResponse findByArticleId(Long articleId) {
+		Article article = articleRepository.find(articleId);
+		List<CommentDetailResponse> comments = article.getComments().stream().map(CommentDetailResponse::from).toList();
+		return CommentListResponse.from(comments);
 	}
 
 	public CommentResponse create(Long articleId, CreateCommentRequest request) {
