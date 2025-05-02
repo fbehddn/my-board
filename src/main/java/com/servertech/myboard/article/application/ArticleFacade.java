@@ -28,12 +28,13 @@ public class ArticleFacade {
 		List<Article> articles = articleQueryService.findAll();
 		List<ArticleResponse> response = articles.stream().map(ArticleResponse::from).toList();
 
-		return new ArticleListResponse(response);
+		return ArticleListResponse.from(response);
 	}
 
 	@Transactional(readOnly = true)
 	public ArticleDetailResponse find(Long id) {
 		Article article = articleQueryService.find(id);
+
 		return ArticleDetailResponse.from(article);
 	}
 

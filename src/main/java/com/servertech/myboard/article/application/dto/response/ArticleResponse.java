@@ -6,7 +6,8 @@ import lombok.Builder;
 @Builder
 public record ArticleResponse(
 	String title,
-	String author) {
+	String author
+) {
 	public static ArticleResponse from(Article article) {
 		return ArticleResponse.builder()
 			.title(article.getTitle())
