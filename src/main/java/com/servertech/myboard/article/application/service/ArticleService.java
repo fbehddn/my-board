@@ -4,9 +4,14 @@ import com.servertech.myboard.article.application.dto.response.ArticleDetailResp
 import com.servertech.myboard.article.application.dto.response.ArticleListResponse;
 import com.servertech.myboard.article.application.dto.request.CreateArticleRequest;
 import com.servertech.myboard.article.application.dto.request.UpdateArticleRequest;
+import com.servertech.myboard.article.application.dto.response.ArticleResponse;
 import com.servertech.myboard.article.domain.Article;
 import com.servertech.myboard.article.domain.ArticleRepository;
+import com.servertech.myboard.user.domain.User;
+import com.servertech.myboard.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +21,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArticleService {
 	private final ArticleRepository articleRepository;
+	private final UserRepository userRepository;
 
 	public ArticleListResponse findAll() {
 		List<Article> articles = articleRepository.findAll();
-		List<ArticleDetailResponse> responses = articles.stream().map(ArticleDetailResponse::from).toList();
+		List<ArticleResponse> responses = articles.stream().map(ArticleResponse::from).toList();
 
 		return ArticleListResponse.from(responses);
 	}
@@ -30,7 +36,15 @@ public class ArticleService {
 	}
 
 	public Article save(CreateArticleRequest request) {
-		Article article = Article.create(request.title(), request.content(), request.author());
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (!(principal instanceof UserDetails userDetails)) {
+			throw new IllegalStateException("User is not authenticated");
+		}
+
+		User user = userRepository.findByEmail(userDetails.getUsername())
+			.orElseThrow(() -> new IllegalStateException("User not found"));
+
+		Article article = Article.create(request.title(), request.content(), user);
 		return articleRepository.save(article);
 	}
 

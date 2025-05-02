@@ -1,5 +1,7 @@
 package com.servertech.myboard.user.domain;
 
+import com.servertech.myboard.article.domain.Article;
+import com.servertech.myboard.comment.domain.Comment;
 import com.servertech.myboard.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,12 +34,23 @@ public class User extends BaseTimeEntity implements UserDetails {
 	@Column(nullable = false)
 	private String username;
 
+	@OneToMany(mappedBy = "user")
+	private List<Article> articles;
+
+	@OneToMany(mappedBy = "user")
+	private List<Comment> comments;
+
 	public static User create(String email, String password, String username) {
 		return User.builder()
 			.email(email)
 			.password(password)
 			.username(username)
 			.build();
+	}
+
+	@Override
+	public String getUsername() {
+		return email;
 	}
 
 	@Override
