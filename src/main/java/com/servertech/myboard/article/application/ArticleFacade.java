@@ -9,11 +9,8 @@ import com.servertech.myboard.article.application.service.ArticleCommandService;
 import com.servertech.myboard.article.application.service.ArticleQueryService;
 import com.servertech.myboard.article.domain.Article;
 import com.servertech.myboard.auth.application.service.AuthService;
-import com.servertech.myboard.user.application.service.UserQueryService;
 import com.servertech.myboard.user.domain.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +21,6 @@ import java.util.List;
 public class ArticleFacade {
 	private final ArticleQueryService articleQueryService;
 	private final ArticleCommandService articleCommandService;
-	private final UserQueryService userQueryService;
 	private final AuthService authService;
 
 	@Transactional(readOnly = true)
