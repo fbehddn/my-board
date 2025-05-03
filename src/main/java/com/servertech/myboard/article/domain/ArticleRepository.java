@@ -1,11 +1,12 @@
 package com.servertech.myboard.article.domain;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ArticleRepository {
 	List<Article> findAll();
 
-	Article find(long id);
+	Optional<Article> find(long id);
 
 	Article save(Article article);
 

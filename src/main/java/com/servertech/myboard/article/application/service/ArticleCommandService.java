@@ -21,12 +21,12 @@ public class ArticleCommandService {
 	}
 
 	public void deleteArticle(Long id) {
-		Article article = articleRepository.find(id);
+		Article article = articleRepository.find(id).orElseThrow(() -> new IllegalArgumentException("Article not found"));
 		articleRepository.delete(article);
 	}
 
 	public void updateArticle(Long id, UpdateArticleRequest request) {
-		Article article = articleRepository.find(id);
+		Article article = articleRepository.find(id).orElseThrow(() -> new IllegalArgumentException("Article not found"));
 		article.update(request.title(), request.content());
 	}
 }

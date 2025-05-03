@@ -19,6 +19,7 @@ public class ArticleQueryService {
 	}
 
 	public Article find(Long id) {
-		return articleRepository.find(id);
+		return articleRepository.find(id).orElseThrow(()
+			-> new IllegalStateException("Article not found"));
 	}
 }
