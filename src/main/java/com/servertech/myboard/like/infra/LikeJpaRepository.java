@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LikeJpaRepository extends JpaRepository<Like, Long> {
 	Long countByTargetId(Long targetId);
+
+	Boolean existsByUserIdAndTargetId(Long userId, Long targetId);
 }

@@ -20,4 +20,9 @@ public class LikeRepositoryImpl implements LikeRepository {
 	public Long countByTargetId(Long articleId) {
 		return likeJpaRepository.countByTargetId(articleId);
 	}
+
+	@Override
+	public Boolean existsByUserIdAndTargetId(Long userId, Long targetId) {
+		return likeJpaRepository.existsByUserIdAndTargetId(userId, targetId);
+	}
 }
