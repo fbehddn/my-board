@@ -1,22 +1,23 @@
 package com.servertech.myboard.like.application.service;
 
-import com.servertech.myboard.global.exception.DuplicateLikeException;
 import com.servertech.myboard.like.domain.LikeRepository;
+import com.servertech.myboard.like.domain.TargetType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class LikeQueryService {
 	private final LikeRepository likeRepository;
 
-	public Long countByArticleId(Long articleId) {
-		return likeRepository.countByTargetId(articleId);
+	@Transactional(readOnly = true)
+	public Long countByTargetIdAndTargetType(Long articleId, TargetType targetType) {
+		return likeRepository.countByTargetIdAndTargetType(articleId, targetType);
 	}
 
-	public void validateNotAlreadyLiked(Long userId, Long articleId) {
-		if (likeRepository.existsByUserIdAndTargetId(userId, articleId)) {
-			throw new DuplicateLikeException("해당 게시글을 이미 좋아요 했습니다");
-		}
+	@Transactional(readOnly = true)
+	public boolean existsByUserIdAndTargetIdAndTargetType(Long id, Long articleId, TargetType targetType) {
+		return likeRepository.existsByUserIdAndTargetIdAndTargetType(id, articleId, targetType);
 	}
 }

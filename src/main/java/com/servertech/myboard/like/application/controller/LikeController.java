@@ -16,10 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class LikeController {
 	private final LikeFacade likeFacade;
 
-	@PostMapping("/{articleId}")
+	@PostMapping("/articles/{articleId}")
 	public ResponseEntity<Void> likeArticle(@PathVariable Long articleId,
 											@AuthenticationPrincipal User user) {
-		likeFacade.like(articleId, user.getUsername());
+		likeFacade.likeArticle(articleId, user.getUsername());
+		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/comments/{commentId}")
+	public ResponseEntity<Void> likeComment(@PathVariable Long commentId,
+											@AuthenticationPrincipal User user) {
+		likeFacade.likeComment(commentId, user.getUsername());
 		return ResponseEntity.ok().build();
 	}
 }
