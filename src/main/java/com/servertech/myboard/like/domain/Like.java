@@ -1,5 +1,6 @@
 package com.servertech.myboard.like.domain;
 
+import com.servertech.myboard.global.BaseTimeEntity;
 import com.servertech.myboard.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Like {
+public class Like extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -25,10 +26,15 @@ public class Like {
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
-	public static Like create(Long targetId, User user) {
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private TargetType targetType;
+
+	public static Like create(Long targetId, User user, TargetType targetType) {
 		return Like.builder()
 			.targetId(targetId)
 			.user(user)
+			.targetType(targetType)
 			.build();
 	}
 }
