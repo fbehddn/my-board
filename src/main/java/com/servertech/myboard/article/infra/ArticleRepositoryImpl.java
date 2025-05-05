@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -18,8 +19,8 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 	}
 
 	@Override
-	public Article find(long id) {
-		return articleJpaRepository.findById(id).orElse(null);
+	public Optional<Article> find(long id) {
+		return articleJpaRepository.findById(id);
 	}
 
 	@Override

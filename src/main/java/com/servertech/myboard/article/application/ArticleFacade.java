@@ -9,6 +9,11 @@ import com.servertech.myboard.article.application.service.ArticleCommandService;
 import com.servertech.myboard.article.application.service.ArticleQueryService;
 import com.servertech.myboard.article.domain.Article;
 import com.servertech.myboard.auth.application.service.AuthService;
+import com.servertech.myboard.comment.application.dto.response.CommentDetailResponse;
+import com.servertech.myboard.comment.application.service.CommentQueryService;
+import com.servertech.myboard.comment.domain.Comment;
+import com.servertech.myboard.like.application.service.LikeQueryService;
+import com.servertech.myboard.like.domain.TargetType;
 import com.servertech.myboard.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -22,6 +27,7 @@ public class ArticleFacade {
 	private final ArticleQueryService articleQueryService;
 	private final ArticleCommandService articleCommandService;
 	private final AuthService authService;
+	private final LikeQueryService likeQueryService;
 
 	@Transactional(readOnly = true)
 	public ArticleListResponse findAll() {
@@ -34,8 +40,8 @@ public class ArticleFacade {
 	@Transactional(readOnly = true)
 	public ArticleDetailResponse find(Long id) {
 		Article article = articleQueryService.find(id);
-
-		return ArticleDetailResponse.from(article);
+		Long count = likeQueryService.countByTargetIdAndTargetType(id,TargetType.ARTICLE);
+		return ArticleDetailResponse.from(article,count);
 	}
 
 	@Transactional

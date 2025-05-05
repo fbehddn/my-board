@@ -14,15 +14,17 @@ public record ArticleDetailResponse(
 	String content,
 	String author,
 	LocalDateTime updatedAt,
-	List<CommentDetailResponse> comments
+	List<CommentDetailResponse> comments,
+	Long likeCount
 ) {
-	public static ArticleDetailResponse from(Article article) {
+	public static ArticleDetailResponse from(Article article, Long likeCount) {
 		return ArticleDetailResponse.builder()
 			.title(article.getTitle())
 			.content(article.getContent())
 			.author(article.getAuthor())
 			.updatedAt(article.getUpdatedAt())
 			.comments(article.getComments().stream().map(CommentDetailResponse::from).collect(Collectors.toList()))
+			.likeCount(likeCount)
 			.build();
 	}
 }

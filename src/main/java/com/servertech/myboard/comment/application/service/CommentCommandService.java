@@ -5,6 +5,7 @@ import com.servertech.myboard.comment.application.dto.request.CreateCommentReque
 import com.servertech.myboard.comment.application.dto.request.UpdateCommentRequest;
 import com.servertech.myboard.comment.domain.Comment;
 import com.servertech.myboard.comment.domain.CommentRepository;
+import com.servertech.myboard.global.exception.EntityNotFoundException;
 import com.servertech.myboard.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class CommentCommandService {
 
 	@Transactional
 	public void update(Long id, UpdateCommentRequest request) {
-		Comment comment = commentRepository.findById(id);
+		Comment comment = commentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Comment not found"));
 		comment.update(request.content());
 	}
 
