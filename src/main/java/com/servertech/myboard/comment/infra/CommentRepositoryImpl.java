@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -13,13 +14,8 @@ public class CommentRepositoryImpl implements CommentRepository {
 	private final CommentJpaRepository commentJpaRepository;
 
 	@Override
-	public List<Comment> findAll() {
-		return commentJpaRepository.findAll();
-	}
-
-	@Override
-	public Comment findById(Long id) {
-		return commentJpaRepository.findById(id).orElse(null);
+	public Optional<Comment> findById(Long id) {
+		return commentJpaRepository.findById(id);
 	}
 
 	@Override
@@ -30,5 +26,10 @@ public class CommentRepositoryImpl implements CommentRepository {
 	@Override
 	public void delete(Long id) {
 		commentJpaRepository.deleteById(id);
+	}
+
+	@Override
+	public List<Comment> findByArticleId(Long articleId) {
+		return commentJpaRepository.findByArticleId(articleId);
 	}
 }

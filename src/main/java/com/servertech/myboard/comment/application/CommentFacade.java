@@ -10,6 +10,8 @@ import com.servertech.myboard.comment.application.dto.response.CommentListRespon
 import com.servertech.myboard.comment.application.dto.response.CommentResponse;
 import com.servertech.myboard.comment.application.service.CommentCommandService;
 import com.servertech.myboard.comment.domain.Comment;
+import com.servertech.myboard.like.application.service.LikeQueryService;
+import com.servertech.myboard.like.domain.TargetType;
 import com.servertech.myboard.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -22,9 +24,15 @@ public class CommentFacade {
 	private final CommentCommandService commentCommandService;
 	private final ArticleQueryService articleQueryService;
 	private final AuthService authService;
+	private final LikeQueryService likeQueryService;
 
 	public CommentListResponse findByArticleId(Long articleId) {
 		Article article = articleQueryService.find(articleId);
+//		List<CommentDetailResponse> comments = article.getComments().stream().map(comment -> {
+//			Long likeCount = likeQueryService.countByTargetIdAndTargetType(comment.getId(), TargetType.COMMENT);
+//			return CommentDetailResponse.from(comment, likeCount);
+//		}).toList();
+
 		List<CommentDetailResponse> comments = article.getComments().stream().map(CommentDetailResponse::from).toList();
 
 		return CommentListResponse.from(comments);
