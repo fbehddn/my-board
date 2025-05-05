@@ -9,9 +9,9 @@ import com.servertech.myboard.comment.application.dto.response.CommentDetailResp
 import com.servertech.myboard.comment.application.dto.response.CommentListResponse;
 import com.servertech.myboard.comment.application.dto.response.CommentResponse;
 import com.servertech.myboard.comment.application.service.CommentCommandService;
+import com.servertech.myboard.comment.application.service.CommentQueryService;
 import com.servertech.myboard.comment.domain.Comment;
-import com.servertech.myboard.like.application.service.LikeQueryService;
-import com.servertech.myboard.like.domain.TargetType;
+import com.servertech.myboard.like.comment.service.CommentLikeQueryService;
 import com.servertech.myboard.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -21,21 +21,20 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class CommentFacade {
+	private final CommentQueryService commentQueryService;
 	private final CommentCommandService commentCommandService;
 	private final ArticleQueryService articleQueryService;
 	private final AuthService authService;
-	private final LikeQueryService likeQueryService;
+	private final CommentLikeQueryService commentLikeQueryService;
 
 	public CommentListResponse findByArticleId(Long articleId) {
-		Article article = articleQueryService.find(articleId);
-//		List<CommentDetailResponse> comments = article.getComments().stream().map(comment -> {
-//			Long likeCount = likeQueryService.countByTargetIdAndTargetType(comment.getId(), TargetType.COMMENT);
-//			return CommentDetailResponse.from(comment, likeCount);
-//		}).toList();
+		List<Comment> comments = commentQueryService.findByArticleId(articleId);
+		List<CommentDetailResponse> responses = comments.stream().map(comment -> {
+			Long likeCount = commentLikeQueryService.countByCommentId(comment.getId());
+			return CommentDetailResponse.from(comment, likeCount);
+		}).toList();
 
-		List<CommentDetailResponse> comments = article.getComments().stream().map(CommentDetailResponse::from).toList();
-
-		return CommentListResponse.from(comments);
+		return CommentListResponse.from(responses);
 	}
 
 	public CommentResponse create(Long articleId, CreateCommentRequest request) {

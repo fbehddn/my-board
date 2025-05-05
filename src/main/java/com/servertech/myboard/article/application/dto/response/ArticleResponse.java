@@ -5,11 +5,13 @@ import lombok.Builder;
 
 @Builder
 public record ArticleResponse(
+	Long id,
 	String title,
 	String author
 ) {
 	public static ArticleResponse from(Article article) {
 		return ArticleResponse.builder()
+			.id(article.getId())
 			.title(article.getTitle())
 			.author(article.getAuthor())
 			.build();
