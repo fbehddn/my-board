@@ -1,4 +1,4 @@
-package com.servertech.myboard.like.domain;
+package com.servertech.myboard.like.article.domain;
 
 import com.servertech.myboard.global.BaseTimeEntity;
 import com.servertech.myboard.user.domain.User;
@@ -9,32 +9,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "likes")
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Like extends BaseTimeEntity {
+public class ArticleLike extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(nullable = false)
-	private Long targetId;
+	private Long articleId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
-	@Column(nullable = false)
-	@Enumerated(EnumType.STRING)
-	private TargetType targetType;
-
-	public static Like create(Long targetId, User user, TargetType targetType) {
-		return Like.builder()
-			.targetId(targetId)
+	public static ArticleLike create(Long articleId, User user) {
+		return ArticleLike.builder()
+			.articleId(articleId)
 			.user(user)
-			.targetType(targetType)
 			.build();
 	}
 }
