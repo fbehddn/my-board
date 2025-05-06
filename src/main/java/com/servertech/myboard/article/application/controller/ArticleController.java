@@ -3,9 +3,12 @@ package com.servertech.myboard.article.application.controller;
 import com.servertech.myboard.article.application.ArticleFacade;
 import com.servertech.myboard.article.application.dto.request.CreateArticleRequest;
 import com.servertech.myboard.article.application.dto.request.UpdateArticleRequest;
+import com.servertech.myboard.article.application.dto.response.ArticleCommentResponse;
 import com.servertech.myboard.article.application.dto.response.ArticleDetailResponse;
 import com.servertech.myboard.article.application.dto.response.ArticleListResponse;
 import com.servertech.myboard.article.application.dto.response.ArticleResponse;
+import com.servertech.myboard.comment.application.CommentFacade;
+import com.servertech.myboard.comment.application.dto.response.CommentListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/articles")
 public class ArticleController {
 	private final ArticleFacade articleFacade;
+	private final CommentFacade commentFacade;
 
 	@GetMapping
 	public ResponseEntity<ArticleListResponse> getArticles() {
@@ -30,9 +34,10 @@ public class ArticleController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<ArticleDetailResponse> getArticle(@PathVariable Long id) {
+	public ResponseEntity<ArticleCommentResponse> getArticleDetail(@PathVariable Long id) {
 		ArticleDetailResponse response = articleFacade.find(id);
-		return ResponseEntity.ok(response);
+		CommentListResponse comments = commentFacade.findByArticleId(id);
+		return ResponseEntity.status(HttpStatus.OK).body(ArticleCommentResponse.from(response, comments));
 	}
 
 	@DeleteMapping("/{id}")

@@ -3,7 +3,6 @@ package com.servertech.myboard.comment.application.controller;
 import com.servertech.myboard.comment.application.CommentFacade;
 import com.servertech.myboard.comment.application.dto.request.CreateCommentRequest;
 import com.servertech.myboard.comment.application.dto.request.UpdateCommentRequest;
-import com.servertech.myboard.comment.application.dto.response.CommentListResponse;
 import com.servertech.myboard.comment.application.dto.response.CommentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,12 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class CommentController {
 	private final CommentFacade commentFacade;
-
-	@GetMapping("/articles/{articleId}/comments")
-	public ResponseEntity<CommentListResponse> getComments(@PathVariable Long articleId) {
-		CommentListResponse response = commentFacade.findByArticleId(articleId);
-		return ResponseEntity.ok(response);
-	}
 
 	@PostMapping("/articles/{articleId}/comments")
 	public ResponseEntity<CommentResponse> createComment(@PathVariable Long articleId,
