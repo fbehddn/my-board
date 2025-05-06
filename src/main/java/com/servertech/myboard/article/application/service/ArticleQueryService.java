@@ -4,10 +4,11 @@ import com.servertech.myboard.article.domain.Article;
 import com.servertech.myboard.article.domain.ArticleRepository;
 import com.servertech.myboard.global.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -15,8 +16,8 @@ import java.util.List;
 public class ArticleQueryService {
 	private final ArticleRepository articleRepository;
 
-	public List<Article> findAll() {
-		return articleRepository.findAll();
+	public Page<Article> findAll(Pageable pageable) {
+		return articleRepository.findAll(pageable);
 	}
 
 	public Article find(Long id) {

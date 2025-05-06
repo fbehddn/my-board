@@ -3,6 +3,8 @@ package com.servertech.myboard.article.infra;
 import com.servertech.myboard.article.domain.Article;
 import com.servertech.myboard.article.domain.ArticleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,8 +16,8 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 	private final ArticleJpaRepository articleJpaRepository;
 
 	@Override
-	public List<Article> findAll() {
-		return articleJpaRepository.findAll();
+	public Page<Article> findAll(Pageable pageable) {
+		return articleJpaRepository.findAll(pageable);
 	}
 
 	@Override

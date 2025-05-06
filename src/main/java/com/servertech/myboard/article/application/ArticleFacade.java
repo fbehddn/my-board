@@ -12,6 +12,8 @@ import com.servertech.myboard.auth.application.service.AuthService;
 import com.servertech.myboard.like.article.service.ArticleLikeQueryService;
 import com.servertech.myboard.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,9 +28,11 @@ public class ArticleFacade {
 	private final ArticleLikeQueryService articleLikeQueryService;
 
 	@Transactional(readOnly = true)
-	public ArticleListResponse findAll() {
-		List<Article> articles = articleQueryService.findAll();
-		List<ArticleResponse> response = articles.stream().map(ArticleResponse::from).toList();
+	public ArticleListResponse findAll(Pageable pageable) {
+		Page<Article> articles = articleQueryService.findAll(pageable);
+		List<ArticleResponse> response = articles.stream()
+			.map(ArticleResponse::from)
+			.toList();
 
 		return ArticleListResponse.from(response);
 	}
