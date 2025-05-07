@@ -38,17 +38,29 @@ public class Article extends BaseTimeEntity {
 	@OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Comment> comments;
 
+	@Column(nullable = false)
+	private long likeCount = 0L;
+
 	public static Article create(String title, String content, User user) {
 		return Article.builder()
 			.title(title)
 			.content(content)
 			.author(user.getUsername())
 			.user(user)
+			.likeCount(0L)
 			.build();
 	}
 
 	public void update(String title, String content) {
 		this.title = title;
 		this.content = content;
+	}
+
+	public void like() {
+		this.likeCount++;
+	}
+
+	public void unlike() {
+		if (this.likeCount > 0) this.likeCount--;
 	}
 }
