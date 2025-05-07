@@ -28,6 +28,12 @@ public class ArticleController {
 		return ResponseEntity.ok(response);
 	}
 
+	@GetMapping("/popular")
+	public ResponseEntity<ArticleListResponse> getPopularArticles(Pageable pageable) {
+		ArticleListResponse response = articleFacade.findPopular(pageable);
+		return ResponseEntity.ok(response);
+	}
+
 	@PostMapping
 	public ResponseEntity<ArticleResponse> createArticle(@RequestBody CreateArticleRequest request) {
 		ArticleResponse response = articleFacade.save(request);

@@ -9,7 +9,6 @@ import com.servertech.myboard.article.application.service.ArticleCommandService;
 import com.servertech.myboard.article.application.service.ArticleQueryService;
 import com.servertech.myboard.article.domain.Article;
 import com.servertech.myboard.auth.application.service.AuthService;
-import com.servertech.myboard.like.article.service.ArticleLikeQueryService;
 import com.servertech.myboard.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -17,7 +16,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,9 +25,7 @@ public class ArticleFacade {
 	private final ArticleQueryService articleQueryService;
 	private final ArticleCommandService articleCommandService;
 	private final AuthService authService;
-	private final ArticleLikeQueryService articleLikeQueryService;
 
-	@Transactional(readOnly = true)
 	@Cacheable(value = "articles", key = "'page:' + #pageable.pageNumber")
 	public ArticleListResponse findAll(Pageable pageable) {
 		Page<Article> articles = articleQueryService.findAll(pageable);
@@ -40,15 +36,22 @@ public class ArticleFacade {
 		return ArticleListResponse.from(response);
 	}
 
-	@Transactional(readOnly = true)
-	public ArticleDetailResponse find(Long id) {
-		Article article = articleQueryService.find(id);
-		Long count = articleLikeQueryService.countByArticleId(id);
+	@Cacheable(value = "articles", key = "'popular&page:' + #pageable.pageNumber")
+	public ArticleListResponse findPopular(Pageable pageable) {
+		Page<Article> articles = articleQueryService.findAllByPopular(pageable);
+		List<ArticleResponse> response = articles.stream()
+			.map(ArticleResponse::from)
+			.toList();
 
-		return ArticleDetailResponse.from(article, count);
+		return ArticleListResponse.from(response);
 	}
 
-	@Transactional
+	public ArticleDetailResponse find(Long id) {
+		Article article = articleQueryService.find(id);
+
+		return ArticleDetailResponse.from(article);
+	}
+
 	@CacheEvict(value = "articles", allEntries = true)
 	public ArticleResponse save(CreateArticleRequest request) {
 		User user = authService.getCurrentUser();
@@ -57,13 +60,11 @@ public class ArticleFacade {
 		return ArticleResponse.from(article);
 	}
 
-	@Transactional
 	@CacheEvict(value = "articles", allEntries = true)
 	public void deleteArticle(Long id) {
 		articleCommandService.deleteArticle(id);
 	}
 
-	@Transactional
 	@CacheEvict(value = "articles", allEntries = true)
 	public void updateArticle(Long id, UpdateArticleRequest request) {
 		articleCommandService.updateArticle(id, request);

@@ -20,6 +20,10 @@ public class ArticleQueryService {
 		return articleRepository.findAll(pageable);
 	}
 
+	public Page<Article> findAllByPopular(Pageable pageable) {
+		return articleRepository.findAllByOrderByLikeCountDesc(pageable);
+	}
+
 	public Article find(Long id) {
 		return articleRepository.find(id).orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다: id=" + id));
 	}

@@ -21,6 +21,11 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 	}
 
 	@Override
+	public Page<Article> findAllByOrderByLikeCountDesc(Pageable pageable) {
+		return articleJpaRepository.findAllByOrderByLikeCountDesc(pageable);
+	}
+
+	@Override
 	public Optional<Article> find(long id) {
 		return articleJpaRepository.findById(id);
 	}
