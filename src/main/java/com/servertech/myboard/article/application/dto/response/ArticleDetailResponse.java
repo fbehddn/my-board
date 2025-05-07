@@ -12,16 +12,16 @@ public record ArticleDetailResponse(
 	String content,
 	String author,
 	LocalDateTime updatedAt,
-	Long likeCount
+	long likeCount
 ) {
-	public static ArticleDetailResponse from(Article article, Long likeCount) {
+	public static ArticleDetailResponse from(Article article) {
 		return ArticleDetailResponse.builder()
 			.id(article.getId())
 			.title(article.getTitle())
 			.content(article.getContent())
 			.author(article.getAuthor())
 			.updatedAt(article.getUpdatedAt())
-			.likeCount(likeCount)
+			.likeCount(article.getLikeCount())
 			.build();
 	}
 }
