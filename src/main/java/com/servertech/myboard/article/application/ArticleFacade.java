@@ -12,6 +12,8 @@ import com.servertech.myboard.auth.application.service.AuthService;
 import com.servertech.myboard.like.article.service.ArticleLikeQueryService;
 import com.servertech.myboard.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -28,6 +30,7 @@ public class ArticleFacade {
 	private final ArticleLikeQueryService articleLikeQueryService;
 
 	@Transactional(readOnly = true)
+	@Cacheable(value = "articles", key = "'page:' + #pageable.pageNumber")
 	public ArticleListResponse findAll(Pageable pageable) {
 		Page<Article> articles = articleQueryService.findAll(pageable);
 		List<ArticleResponse> response = articles.stream()
@@ -46,6 +49,7 @@ public class ArticleFacade {
 	}
 
 	@Transactional
+	@CacheEvict(value = "articles", allEntries = true)
 	public ArticleResponse save(CreateArticleRequest request) {
 		User user = authService.getCurrentUser();
 		Article article = articleCommandService.save(request, user);
@@ -53,12 +57,14 @@ public class ArticleFacade {
 		return ArticleResponse.from(article);
 	}
 
-	@Transactional()
+	@Transactional
+	@CacheEvict(value = "articles", allEntries = true)
 	public void deleteArticle(Long id) {
 		articleCommandService.deleteArticle(id);
 	}
 
-	@Transactional()
+	@Transactional
+	@CacheEvict(value = "articles", allEntries = true)
 	public void updateArticle(Long id, UpdateArticleRequest request) {
 		articleCommandService.updateArticle(id, request);
 	}
