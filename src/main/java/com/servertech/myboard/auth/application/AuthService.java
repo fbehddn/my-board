@@ -1,4 +1,4 @@
-package com.servertech.myboard.auth.application.service;
+package com.servertech.myboard.auth.application;
 
 import com.servertech.myboard.global.exception.UnauthorizedException;
 import com.servertech.myboard.user.application.service.UserQueryService;

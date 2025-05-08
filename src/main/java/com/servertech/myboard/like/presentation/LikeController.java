@@ -1,8 +1,8 @@
-package com.servertech.myboard.like;
+package com.servertech.myboard.like.presentation;
 
-import com.servertech.myboard.like.article.application.ArticleLikeFacade;
-import com.servertech.myboard.like.comment.application.CommentLikeFacade;
-import com.servertech.myboard.user.domain.User;
+import com.servertech.myboard.like.article.application.ArticleLikeService;
+import com.servertech.myboard.like.comment.application.CommentLikeCommandService;
+import com.servertech.myboard.user.infra.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,20 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/likes")
 public class LikeController {
-	private final ArticleLikeFacade articleLikeFacade;
-	private final CommentLikeFacade commentLikeFacade;
+	private final ArticleLikeService articleLikeService;
+	private final CommentLikeCommandService commentLikeCommandService;
 
 	@PostMapping("/articles/{articleId}")
 	public ResponseEntity<Void> likeArticle(@PathVariable Long articleId,
-											@AuthenticationPrincipal User user) {
-		articleLikeFacade.likeArticle(articleId, user);
+											@AuthenticationPrincipal CustomUserDetails principal) {
+		articleLikeService.likeArticle(articleId, principal.getId());
 		return ResponseEntity.ok().build();
 	}
 
 	@PostMapping("/comments/{commentId}")
 	public ResponseEntity<Void> likeComment(@PathVariable Long commentId,
-											@AuthenticationPrincipal User user) {
-		commentLikeFacade.likeComment(commentId, user);
+											@AuthenticationPrincipal CustomUserDetails principal) {
+		commentLikeCommandService.likeComment(commentId, principal.getId());
 		return ResponseEntity.ok().build();
 	}
 }

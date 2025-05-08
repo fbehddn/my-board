@@ -2,7 +2,7 @@ package com.servertech.myboard.comment.application;
 
 import com.servertech.myboard.article.application.service.ArticleQueryService;
 import com.servertech.myboard.article.domain.Article;
-import com.servertech.myboard.auth.application.service.AuthService;
+import com.servertech.myboard.auth.application.AuthService;
 import com.servertech.myboard.comment.application.dto.request.CreateCommentRequest;
 import com.servertech.myboard.comment.application.dto.request.UpdateCommentRequest;
 import com.servertech.myboard.comment.application.dto.response.CommentDetailResponse;
@@ -11,7 +11,7 @@ import com.servertech.myboard.comment.application.dto.response.CommentResponse;
 import com.servertech.myboard.comment.application.service.CommentCommandService;
 import com.servertech.myboard.comment.application.service.CommentQueryService;
 import com.servertech.myboard.comment.domain.Comment;
-import com.servertech.myboard.like.comment.service.CommentLikeQueryService;
+import com.servertech.myboard.like.comment.application.CommentLikeQueryService;
 import com.servertech.myboard.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
