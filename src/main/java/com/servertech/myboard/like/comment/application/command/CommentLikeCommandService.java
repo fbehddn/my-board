@@ -1,4 +1,4 @@
-package com.servertech.myboard.like.comment.application;
+package com.servertech.myboard.like.comment.application.command;
 
 import com.servertech.myboard.comment.domain.Comment;
 import com.servertech.myboard.comment.domain.CommentRepository;

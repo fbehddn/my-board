@@ -1,4 +1,4 @@
-package com.servertech.myboard.like.article.infra;
+package com.servertech.myboard.like.article.infra.persistence.jpa;
 
 import com.servertech.myboard.like.article.domain.ArticleLike;
 import com.servertech.myboard.like.article.domain.ArticleLikeRepository;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class ArticleLikeRepositoryImpl implements ArticleLikeRepository {
+public class ArticleLikeJpaAdapter implements ArticleLikeRepository {
 	private final ArticleLikeJpaRepository articleLikeJpaRepository;
 
 	@Override

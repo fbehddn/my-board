@@ -1,4 +1,4 @@
-package com.servertech.myboard.article.application.service;
+package com.servertech.myboard.article.application.command;
 
 import com.servertech.myboard.article.application.dto.request.CreateArticleRequest;
 import com.servertech.myboard.article.application.dto.request.UpdateArticleRequest;

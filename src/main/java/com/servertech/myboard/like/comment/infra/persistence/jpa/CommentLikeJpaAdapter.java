@@ -1,4 +1,4 @@
-package com.servertech.myboard.like.comment.infra;
+package com.servertech.myboard.like.comment.infra.persistence.jpa;
 
 import com.servertech.myboard.like.comment.domain.CommentLike;
 import com.servertech.myboard.like.comment.domain.CommentLikeRepository;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class CommentLikeRepositoryImpl implements CommentLikeRepository {
+public class CommentLikeJpaAdapter implements CommentLikeRepository {
 	private final CommentLikeJpaRepository commentLikeJpaRepository;
 
 	@Override

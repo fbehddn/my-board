@@ -1,4 +1,4 @@
-package com.servertech.myboard.article.infra;
+package com.servertech.myboard.article.infra.persistence.jpa;
 
 import com.servertech.myboard.article.domain.Article;
 import org.springframework.data.domain.Page;

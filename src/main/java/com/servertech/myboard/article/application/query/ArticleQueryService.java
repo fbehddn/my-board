@@ -1,4 +1,4 @@
-package com.servertech.myboard.article.application.service;
+package com.servertech.myboard.article.application.query;
 
 import com.servertech.myboard.article.domain.Article;
 import com.servertech.myboard.article.domain.ArticleRepository;

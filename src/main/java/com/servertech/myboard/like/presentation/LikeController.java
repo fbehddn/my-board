@@ -1,7 +1,7 @@
 package com.servertech.myboard.like.presentation;
 
 import com.servertech.myboard.like.article.application.ArticleLikeService;
-import com.servertech.myboard.like.comment.application.CommentLikeCommandService;
+import com.servertech.myboard.like.comment.application.command.CommentLikeCommandService;
 import com.servertech.myboard.user.infra.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

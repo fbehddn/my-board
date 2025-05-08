@@ -5,8 +5,8 @@ import com.servertech.myboard.article.application.dto.request.UpdateArticleReque
 import com.servertech.myboard.article.application.dto.response.ArticleDetailResponse;
 import com.servertech.myboard.article.application.dto.response.ArticleListResponse;
 import com.servertech.myboard.article.application.dto.response.ArticleResponse;
-import com.servertech.myboard.article.application.service.ArticleCommandService;
-import com.servertech.myboard.article.application.service.ArticleQueryService;
+import com.servertech.myboard.article.application.command.ArticleCommandService;
+import com.servertech.myboard.article.application.query.ArticleQueryService;
 import com.servertech.myboard.article.domain.Article;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;

@@ -1,4 +1,4 @@
-package com.servertech.myboard.like.comment.application;
+package com.servertech.myboard.like.comment.application.query;
 
 import com.servertech.myboard.like.comment.domain.CommentLikeRepository;
 import lombok.RequiredArgsConstructor;

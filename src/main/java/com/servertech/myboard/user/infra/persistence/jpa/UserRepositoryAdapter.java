@@ -1,4 +1,4 @@
-package com.servertech.myboard.user.infra;
+package com.servertech.myboard.user.infra.persistence.jpa;
 
 import com.servertech.myboard.user.domain.User;
 import com.servertech.myboard.user.domain.UserRepository;
@@ -9,17 +9,17 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class UserRepositoryImpl implements UserRepository {
-	private final UserJPARepository userRepository;
+public class UserRepositoryAdapter implements UserRepository {
+	private final UserJpaRepository userJpaRepository;
 
 	@Override
 	public void save(User user) {
-		userRepository.save(user);
+		userJpaRepository.save(user);
 	}
 
 	@Override
 	public Optional<User> findByEmail(String email) {
-		return userRepository.findByEmail(email);
+		return userJpaRepository.findByEmail(email);
 	}
 
 	@Override

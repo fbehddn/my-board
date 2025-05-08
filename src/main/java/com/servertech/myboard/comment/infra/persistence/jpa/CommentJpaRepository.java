@@ -1,4 +1,4 @@
-package com.servertech.myboard.comment.infra;
+package com.servertech.myboard.comment.infra.persistence.jpa;
 
 import com.servertech.myboard.comment.domain.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;

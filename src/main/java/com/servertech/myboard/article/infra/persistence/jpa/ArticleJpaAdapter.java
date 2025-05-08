@@ -1,4 +1,4 @@
-package com.servertech.myboard.article.infra;
+package com.servertech.myboard.article.infra.persistence.jpa;
 
 import com.servertech.myboard.article.domain.Article;
 import com.servertech.myboard.article.domain.ArticleRepository;
@@ -7,12 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class ArticleRepositoryImpl implements ArticleRepository {
+public class ArticleJpaAdapter implements ArticleRepository {
 	private final ArticleJpaRepository articleJpaRepository;
 
 	@Override

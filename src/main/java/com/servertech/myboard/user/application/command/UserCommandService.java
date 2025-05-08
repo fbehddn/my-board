@@ -1,4 +1,4 @@
-package com.servertech.myboard.user.application.service;
+package com.servertech.myboard.user.application.command;
 
 import com.servertech.myboard.user.application.dto.request.UserCreateRequest;
 import com.servertech.myboard.user.domain.User;

@@ -1,4 +1,4 @@
-package com.servertech.myboard.comment.application.controller;
+package com.servertech.myboard.comment.presentation;
 
 import com.servertech.myboard.comment.application.CommentFacade;
 import com.servertech.myboard.comment.application.dto.request.CreateCommentRequest;

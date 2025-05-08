@@ -1,4 +1,4 @@
-package com.servertech.myboard.comment.infra;
+package com.servertech.myboard.comment.infra.persistence.jpa;
 
 import com.servertech.myboard.comment.domain.Comment;
 import com.servertech.myboard.comment.domain.CommentRepository;
@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class CommentRepositoryImpl implements CommentRepository {
+public class CommentJpaAdapter implements CommentRepository {
 	private final CommentJpaRepository commentJpaRepository;
 
 	@Override

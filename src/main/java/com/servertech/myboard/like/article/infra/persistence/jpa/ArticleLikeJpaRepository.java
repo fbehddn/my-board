@@ -1,4 +1,4 @@
-package com.servertech.myboard.like.article.infra;
+package com.servertech.myboard.like.article.infra.persistence.jpa;
 
 import com.servertech.myboard.like.article.domain.ArticleLike;
 import org.springframework.data.jpa.repository.JpaRepository;

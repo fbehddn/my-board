@@ -1,4 +1,4 @@
-package com.servertech.myboard.like.comment.infra;
+package com.servertech.myboard.like.comment.infra.persistence.jpa;
 
 import com.servertech.myboard.like.comment.domain.CommentLike;
 import org.springframework.data.jpa.repository.JpaRepository;
