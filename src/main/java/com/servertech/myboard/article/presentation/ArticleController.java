@@ -1,4 +1,4 @@
-package com.servertech.myboard.article.application.controller;
+package com.servertech.myboard.article.presentation;
 
 import com.servertech.myboard.article.application.ArticleFacade;
 import com.servertech.myboard.article.application.dto.request.CreateArticleRequest;
@@ -9,10 +9,12 @@ import com.servertech.myboard.article.application.dto.response.ArticleListRespon
 import com.servertech.myboard.article.application.dto.response.ArticleResponse;
 import com.servertech.myboard.comment.application.CommentFacade;
 import com.servertech.myboard.comment.application.dto.response.CommentListResponse;
+import com.servertech.myboard.user.infra.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,8 +37,10 @@ public class ArticleController {
 	}
 
 	@PostMapping
-	public ResponseEntity<ArticleResponse> createArticle(@RequestBody CreateArticleRequest request) {
-		ArticleResponse response = articleFacade.save(request);
+	public ResponseEntity<ArticleResponse> createArticle(@RequestBody CreateArticleRequest request,
+														 @AuthenticationPrincipal CustomUserDetails principal
+	) {
+		ArticleResponse response = articleFacade.save(request, principal.getId());
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
@@ -48,14 +52,17 @@ public class ArticleController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteArticle(@PathVariable Long id) {
-		articleFacade.deleteArticle(id);
+	public ResponseEntity<Void> deleteArticle(@PathVariable Long id,
+											  @AuthenticationPrincipal CustomUserDetails principal) {
+		articleFacade.deleteArticle(id, principal.getId());
 		return ResponseEntity.noContent().build();
 	}
 
 	@PatchMapping("/{id}")
-	public ResponseEntity<Void> updateArticle(@PathVariable Long id, @RequestBody UpdateArticleRequest request) {
-		articleFacade.updateArticle(id, request);
+	public ResponseEntity<Void> updateArticle(@PathVariable Long id,
+											  @RequestBody UpdateArticleRequest request,
+											  @AuthenticationPrincipal CustomUserDetails principal) {
+		articleFacade.updateArticle(id, request, principal.getId());
 		return ResponseEntity.noContent().build();
 	}
 }

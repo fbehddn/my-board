@@ -8,8 +8,6 @@ import com.servertech.myboard.article.application.dto.response.ArticleResponse;
 import com.servertech.myboard.article.application.service.ArticleCommandService;
 import com.servertech.myboard.article.application.service.ArticleQueryService;
 import com.servertech.myboard.article.domain.Article;
-import com.servertech.myboard.auth.application.service.AuthService;
-import com.servertech.myboard.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -24,7 +22,6 @@ import java.util.List;
 public class ArticleFacade {
 	private final ArticleQueryService articleQueryService;
 	private final ArticleCommandService articleCommandService;
-	private final AuthService authService;
 
 	@Cacheable(value = "articles", key = "'page:' + #pageable.pageNumber")
 	public ArticleListResponse findAll(Pageable pageable) {
@@ -53,22 +50,19 @@ public class ArticleFacade {
 	}
 
 	@CacheEvict(value = "articles", allEntries = true)
-	public ArticleResponse save(CreateArticleRequest request) {
-		User user = authService.currentUser();
-		Article article = articleCommandService.save(request, user);
+	public ArticleResponse save(CreateArticleRequest request, Long userId) {
+		Article article = articleCommandService.save(request, userId);
 
 		return ArticleResponse.from(article);
 	}
 
 	@CacheEvict(value = "articles", allEntries = true)
-	public void deleteArticle(Long id) {
-		User user = authService.currentUser();
-		articleCommandService.deleteArticle(id,user);
+	public void deleteArticle(Long id, Long userId) {
+		articleCommandService.deleteArticle(id, userId);
 	}
 
 	@CacheEvict(value = "articles", allEntries = true)
-	public void updateArticle(Long id, UpdateArticleRequest request) {
-		User user = authService.currentUser();
-		articleCommandService.updateArticle(id, request, user);
+	public void updateArticle(Long id, UpdateArticleRequest request, Long userId) {
+		articleCommandService.updateArticle(id, request, userId);
 	}
 }
