@@ -54,7 +54,7 @@ public class ArticleFacade {
 
 	@CacheEvict(value = "articles", allEntries = true)
 	public ArticleResponse save(CreateArticleRequest request) {
-		User user = authService.getCurrentUser();
+		User user = authService.currentUser();
 		Article article = articleCommandService.save(request, user);
 
 		return ArticleResponse.from(article);
@@ -62,11 +62,13 @@ public class ArticleFacade {
 
 	@CacheEvict(value = "articles", allEntries = true)
 	public void deleteArticle(Long id) {
-		articleCommandService.deleteArticle(id);
+		User user = authService.currentUser();
+		articleCommandService.deleteArticle(id,user);
 	}
 
 	@CacheEvict(value = "articles", allEntries = true)
 	public void updateArticle(Long id, UpdateArticleRequest request) {
-		articleCommandService.updateArticle(id, request);
+		User user = authService.currentUser();
+		articleCommandService.updateArticle(id, request, user);
 	}
 }
