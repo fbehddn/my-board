@@ -28,9 +28,4 @@ public class ArticleLikeCommandService {
 			article.like();
 		}
 	}
-
-	@Transactional
-	public void delete(Long articleId, Long userId) {
-		articleLikeRepository.deleteByArticleIdAndUserId(articleId, userId);
-	}
 }

@@ -21,14 +21,14 @@ public class LikeController {
 	@PostMapping("/articles/{articleId}")
 	public ResponseEntity<Void> likeArticle(@PathVariable Long articleId,
 											@AuthenticationPrincipal User user) {
-		articleLikeFacade.likeArticle(articleId, user.getUsername());
+		articleLikeFacade.likeArticle(articleId, user);
 		return ResponseEntity.ok().build();
 	}
 
 	@PostMapping("/comments/{commentId}")
 	public ResponseEntity<Void> likeComment(@PathVariable Long commentId,
 											@AuthenticationPrincipal User user) {
-		commentLikeFacade.likeComment(commentId, user.getUsername());
+		commentLikeFacade.likeComment(commentId, user);
 		return ResponseEntity.ok().build();
 	}
 }

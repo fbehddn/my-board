@@ -38,7 +38,7 @@ public class CommentFacade {
 	}
 
 	public CommentResponse create(Long articleId, CreateCommentRequest request) {
-		User user = authService.getCurrentUser();
+		User user = authService.currentUser();
 		Article article = articleQueryService.find(articleId);
 		Comment comment = commentCommandService.create(user, article, request);
 
@@ -46,10 +46,12 @@ public class CommentFacade {
 	}
 
 	public void update(Long id, UpdateCommentRequest request) {
-		commentCommandService.update(id, request);
+		User user = authService.currentUser();
+		commentCommandService.update(id, request,user);
 	}
 
 	public void delete(Long id) {
-		commentCommandService.delete(id);
+		User user = authService.currentUser();
+		commentCommandService.delete(id, user);
 	}
 }

@@ -33,6 +33,9 @@ public class Comment extends BaseTimeEntity {
 	@JoinColumn(name = "article_id", nullable = false)
 	private Article article;
 
+	@Column(nullable = false)
+	private long likeCount = 0L;
+
 	public static Comment create(String content, User user, Article article) {
 		return Comment.builder()
 			.content(content)
@@ -44,5 +47,13 @@ public class Comment extends BaseTimeEntity {
 
 	public void update(String content) {
 		this.content = content;
+	}
+
+	public void like() {
+		this.likeCount++;
+	}
+
+	public void unlike() {
+		if (this.likeCount > 0) this.likeCount--;
 	}
 }
