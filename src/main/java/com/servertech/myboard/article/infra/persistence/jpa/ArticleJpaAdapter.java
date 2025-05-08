@@ -30,6 +30,11 @@ public class ArticleJpaAdapter implements ArticleRepository {
 	}
 
 	@Override
+	public Article getReferenceById(long id) {
+		return articleJpaRepository.getReferenceById(id);
+	}
+
+	@Override
 	public Article save(Article article) {
 		return articleJpaRepository.save(article);
 	}

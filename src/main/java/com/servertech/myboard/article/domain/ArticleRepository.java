@@ -12,6 +12,8 @@ public interface ArticleRepository {
 
 	Optional<Article> find(long id);
 
+	Article getReferenceById(long id);
+
 	Article save(Article article);
 
 	void delete(Article article);
