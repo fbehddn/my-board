@@ -1,6 +1,5 @@
 package com.servertech.myboard.user.application;
 
-import com.servertech.myboard.auth.application.service.AuthService;
 import com.servertech.myboard.user.application.dto.request.UserCreateRequest;
 import com.servertech.myboard.user.application.dto.request.UserLoginRequest;
 import com.servertech.myboard.user.application.dto.response.JwtResponse;

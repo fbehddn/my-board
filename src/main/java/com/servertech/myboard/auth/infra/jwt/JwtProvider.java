@@ -4,7 +4,7 @@ import static io.jsonwebtoken.Header.JWT_TYPE;
 import static io.jsonwebtoken.Header.TYPE;
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 
-import com.servertech.myboard.user.application.service.CustomUserDetailService;
+import com.servertech.myboard.user.infra.security.CustomUserDetailService;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
