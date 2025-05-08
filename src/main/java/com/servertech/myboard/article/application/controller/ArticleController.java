@@ -10,6 +10,7 @@ import com.servertech.myboard.article.application.dto.response.ArticleResponse;
 import com.servertech.myboard.comment.application.CommentFacade;
 import com.servertech.myboard.comment.application.dto.response.CommentListResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,14 @@ public class ArticleController {
 	private final CommentFacade commentFacade;
 
 	@GetMapping
-	public ResponseEntity<ArticleListResponse> getArticles() {
-		ArticleListResponse response = articleFacade.findAll();
+	public ResponseEntity<ArticleListResponse> getArticles(Pageable pageable) {
+		ArticleListResponse response = articleFacade.findAll(pageable);
+		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping("/popular")
+	public ResponseEntity<ArticleListResponse> getPopularArticles(Pageable pageable) {
+		ArticleListResponse response = articleFacade.findPopular(pageable);
 		return ResponseEntity.ok(response);
 	}
 

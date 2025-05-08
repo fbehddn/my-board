@@ -1,10 +1,14 @@
 package com.servertech.myboard.article.domain;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.Optional;
 
 public interface ArticleRepository {
-	List<Article> findAll();
+	Page<Article> findAll(Pageable pageable);
+
+	Page<Article> findAllByOrderByLikeCountDesc(Pageable pageable);
 
 	Optional<Article> find(long id);
 
