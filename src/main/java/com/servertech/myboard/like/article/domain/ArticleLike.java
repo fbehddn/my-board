@@ -8,6 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(
+	name = "article_likes",
+	uniqueConstraints = @UniqueConstraint(
+		name = "uk_article_like_article_user",
+		columnNames = {"article_id", "user_id"}
+	)
+)
 @Getter
 @Builder
 @NoArgsConstructor
