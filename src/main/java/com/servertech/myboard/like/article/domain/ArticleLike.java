@@ -1,7 +1,6 @@
 package com.servertech.myboard.like.article.domain;
 
 import com.servertech.myboard.global.BaseTimeEntity;
-import com.servertech.myboard.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(
+	name = "article_likes",
+	uniqueConstraints = @UniqueConstraint(
+		name = "uk_article_like_article_user",
+		columnNames = {"article_id", "user_id"}
+	)
+)
 @Getter
 @Builder
 @NoArgsConstructor
@@ -18,17 +24,16 @@ public class ArticleLike extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(name = "article_id", nullable = false)
 	private Long articleId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
+	@Column(name = "user_id", nullable = false)
+	private Long userId;
 
-	public static ArticleLike create(Long articleId, User user) {
+	public static ArticleLike create(Long articleId, Long userId) {
 		return ArticleLike.builder()
 			.articleId(articleId)
-			.user(user)
+			.userId(userId)
 			.build();
 	}
 }

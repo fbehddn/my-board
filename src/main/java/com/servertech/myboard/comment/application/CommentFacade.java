@@ -1,18 +1,14 @@
 package com.servertech.myboard.comment.application;
 
-import com.servertech.myboard.article.application.service.ArticleQueryService;
-import com.servertech.myboard.article.domain.Article;
-import com.servertech.myboard.auth.application.service.AuthService;
+import com.servertech.myboard.comment.application.command.CommentCommandService;
 import com.servertech.myboard.comment.application.dto.request.CreateCommentRequest;
 import com.servertech.myboard.comment.application.dto.request.UpdateCommentRequest;
 import com.servertech.myboard.comment.application.dto.response.CommentDetailResponse;
 import com.servertech.myboard.comment.application.dto.response.CommentListResponse;
 import com.servertech.myboard.comment.application.dto.response.CommentResponse;
-import com.servertech.myboard.comment.application.service.CommentCommandService;
-import com.servertech.myboard.comment.application.service.CommentQueryService;
+import com.servertech.myboard.comment.application.query.CommentQueryService;
 import com.servertech.myboard.comment.domain.Comment;
-import com.servertech.myboard.like.comment.service.CommentLikeQueryService;
-import com.servertech.myboard.user.domain.User;
+import com.servertech.myboard.like.comment.application.query.CommentLikeQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -23,8 +19,6 @@ import java.util.List;
 public class CommentFacade {
 	private final CommentQueryService commentQueryService;
 	private final CommentCommandService commentCommandService;
-	private final ArticleQueryService articleQueryService;
-	private final AuthService authService;
 	private final CommentLikeQueryService commentLikeQueryService;
 
 	public CommentListResponse findByArticleId(Long articleId) {
@@ -37,21 +31,16 @@ public class CommentFacade {
 		return CommentListResponse.from(responses);
 	}
 
-	public CommentResponse create(Long articleId, CreateCommentRequest request) {
-		User user = authService.currentUser();
-		Article article = articleQueryService.find(articleId);
-		Comment comment = commentCommandService.create(user, article, request);
-
+	public CommentResponse create(Long articleId, CreateCommentRequest request, Long userId) {
+		Comment comment = commentCommandService.create(userId, articleId, request);
 		return CommentResponse.from(comment);
 	}
 
-	public void update(Long id, UpdateCommentRequest request) {
-		User user = authService.currentUser();
-		commentCommandService.update(id, request,user);
+	public void update(Long id, UpdateCommentRequest request, Long userId) {
+		commentCommandService.update(id, request, userId);
 	}
 
-	public void delete(Long id) {
-		User user = authService.currentUser();
-		commentCommandService.delete(id, user);
+	public void delete(Long id, Long userId) {
+		commentCommandService.delete(id, userId);
 	}
 }
