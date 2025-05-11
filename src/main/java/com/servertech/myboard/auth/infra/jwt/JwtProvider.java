@@ -24,13 +24,17 @@ public class JwtProvider {
 	private final static String HEADER_AUTHORIZATION = "Authorization";
 	private final static String TOKEN_PREFIX = "Bearer ";
 
-	public String generateToken(String email) {
-		Date now = new Date();
-		return makeToken(new Date(now.getTime() + Duration.ofHours(1).toMillis()), email);
+	public String generateAccessToken(String email) {
+		return makeToken(Duration.ofMinutes(15), email);
 	}
 
-	private String makeToken(Date expiry, String email) {
+	public String generateRefreshToken(String email) {
+		return makeToken(Duration.ofDays(14), email);
+	}
+
+	private String makeToken(Duration ttl, String email) {
 		Date now = new Date();
+		Date expiry = new Date(now.getTime() + ttl.toMillis());
 
 		return Jwts.builder()
 			.setHeaderParam(TYPE, JWT_TYPE)
@@ -67,7 +71,7 @@ public class JwtProvider {
 		return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 	}
 
-	private Claims getClaims(String token) {
+	public Claims getClaims(String token) {
 		return Jwts.parser()
 			.setSigningKey(jwtProperties.getSecretKey())
 			.parseClaimsJws(token)
