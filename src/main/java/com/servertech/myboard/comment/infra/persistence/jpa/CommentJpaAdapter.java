@@ -24,8 +24,8 @@ public class CommentJpaAdapter implements CommentRepository {
 	}
 
 	@Override
-	public void delete(Long id) {
-		commentJpaRepository.deleteById(id);
+	public void delete(Comment comment) {
+		commentJpaRepository.delete(comment);
 	}
 
 	@Override
