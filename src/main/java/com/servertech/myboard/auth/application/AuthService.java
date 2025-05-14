@@ -1,7 +1,7 @@
 package com.servertech.myboard.auth.application;
 
 import com.servertech.myboard.auth.domain.RefreshToken;
-import com.servertech.myboard.auth.domain.RefreshTokenRepository;
+import com.servertech.myboard.auth.domain.RefreshTokenStore;
 import com.servertech.myboard.auth.infra.jwt.JwtProvider;
 import com.servertech.myboard.auth.application.dto.response.JwtResponse;
 import com.servertech.myboard.global.exception.EntityNotFoundException;
@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.Duration;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +20,10 @@ public class AuthService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtProvider jwtProvider;
-	private final RefreshTokenRepository refreshTokenRepository;
+	private final RefreshTokenStore refreshTokenStore;
+
+	private static final Duration RT_TTL = Duration.ofDays(14);
+
 
 	public JwtResponse login(LoginRequest request) {
 		User user = userRepository.findByEmail(request.email())
@@ -32,8 +35,8 @@ public class AuthService {
 		String accessToken = jwtProvider.generateAccessToken(user.getEmail());
 		String refreshToken = jwtProvider.generateRefreshToken(user.getEmail());
 
-		refreshTokenRepository.findByEmail(user.getEmail()).ifPresent(refreshTokenRepository::delete);
-		refreshTokenRepository.save(new RefreshToken(null, user.getEmail(), refreshToken, LocalDateTime.now().plusDays(14)));
+		RefreshToken rt = RefreshToken.from(request.email(), refreshToken, RT_TTL);
+		refreshTokenStore.save(rt);
 
 		return JwtResponse.from(accessToken, refreshToken);
 	}
@@ -43,22 +46,23 @@ public class AuthService {
 			throw new IllegalArgumentException("Invalid refresh token");
 		}
 		String email = jwtProvider.getClaims(oldRefreshToken).getSubject();
-		RefreshToken saved = refreshTokenRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("RefreshToken not found"));
+		String saved = refreshTokenStore.find(email).orElseThrow(() -> new EntityNotFoundException("Refresh token not found"));
 
-		if (!saved.getToken().equals(oldRefreshToken) || saved.getExpiry().isBefore(LocalDateTime.now())) {
-			throw new IllegalArgumentException("Refresh token expired");
+		if (!saved.equals(oldRefreshToken)) {
+			throw new IllegalArgumentException("Wrong refresh token");
 		}
 
 		String newAccessToken = jwtProvider.generateAccessToken(email);
 		String newRefreshToken = jwtProvider.generateRefreshToken(email);
-		saved.setToken(newRefreshToken);
-		saved.setExpiry(LocalDateTime.now().plusDays(14));
-		refreshTokenRepository.save(saved);
+
+		RefreshToken rt = RefreshToken.from(email, newRefreshToken, RT_TTL);
+
+		refreshTokenStore.save(rt);
 
 		return JwtResponse.from(newAccessToken, newRefreshToken);
 	}
 
 	public void logout(String email) {
-		refreshTokenRepository.findByEmail(email).ifPresent(refreshTokenRepository::delete);
+		refreshTokenStore.delete(email);
 	}
 }

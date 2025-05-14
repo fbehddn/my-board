@@ -1,27 +1,20 @@
 package com.servertech.myboard.auth.domain;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Builder;
 
-import java.time.LocalDateTime;
+import java.time.Duration;
 
-@Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-public class RefreshToken {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	private String email;
-
-	@Column(length = 500)
-	private String token;
-
-	private LocalDateTime expiry;
+@Builder
+public record RefreshToken(
+	String email,
+	String value,
+	Duration ttl
+) {
+	public static RefreshToken from(String email, String value, Duration ttl) {
+		return RefreshToken.builder()
+			.email(email)
+			.value(value)
+			.ttl(ttl)
+			.build();
+	}
 }
