@@ -11,6 +11,7 @@ import com.servertech.myboard.comment.application.CommentFacade;
 import com.servertech.myboard.comment.application.dto.response.CommentListResponse;
 import com.servertech.myboard.user.infra.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +26,18 @@ public class ArticleController {
 	private final CommentFacade commentFacade;
 
 	@GetMapping
-	public ResponseEntity<ArticleListResponse> getArticles(Pageable pageable) {
+	public ResponseEntity<ArticleListResponse> getArticles(@RequestParam(defaultValue = "0") int page,
+														   @RequestParam(defaultValue = "10") int size) {
+
+		Pageable pageable = PageRequest.of(page, size);
 		ArticleListResponse response = articleFacade.findAll(pageable);
 		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping("/popular")
-	public ResponseEntity<ArticleListResponse> getPopularArticles(Pageable pageable) {
+	public ResponseEntity<ArticleListResponse> getPopularArticles(@RequestParam(defaultValue = "0") int page,
+																  @RequestParam(defaultValue = "10") int size) {
+		Pageable pageable = PageRequest.of(page, size);
 		ArticleListResponse response = articleFacade.findPopular(pageable);
 		return ResponseEntity.ok(response);
 	}
