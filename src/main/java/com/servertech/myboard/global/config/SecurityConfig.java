@@ -20,22 +20,50 @@ public class SecurityConfig {
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		return http
+	public SecurityFilterChain apiSecurityChain(HttpSecurity http) throws Exception {
+		http
 			.csrf(AbstractHttpConfigurer::disable)
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.authorizeHttpRequests(auth -> auth
-				.requestMatchers(
-					"/api/users/signup",
-					"/api/auth/login", "/api/auth/refresh",
-					"/api/articles", "/api/articles/popular",
-					"/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/webjars/**"
-				).permitAll()
+			.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.authorizeHttpRequests(authz -> authz
+				.requestMatchers(ACTUATOR_PATTERN).permitAll()
+				.requestMatchers(SWAGGER_PATTERNS).permitAll()
+				.requestMatchers(STATIC_RESOURCES_PATTERNS).permitAll()
+				.requestMatchers(PERMIT_ALL_PATTERNS).permitAll()
+				.requestMatchers(PUBLIC_ENDPOINTS).permitAll()
+				.requestMatchers(AUTH_ENDPOINTS).permitAll()
 				.anyRequest().authenticated()
 			)
-			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-			.build();
+			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		return http.build();
 	}
+
+	private static final String ACTUATOR_PATTERN = "/actuator/**";
+	private static final String[] SWAGGER_PATTERNS = {
+		"/swagger-ui/**",
+		"/v3/api-docs/**"
+	};
+	private static final String[] STATIC_RESOURCES_PATTERNS = {
+		"/img/**",
+		"/css/**",
+		"/js/**",
+		"/cloud/**"
+	};
+	private static final String[] PERMIT_ALL_PATTERNS = {
+		"/error",
+		"/favicon.ico",
+		"/index.html",
+		"/"
+	};
+	private static final String[] PUBLIC_ENDPOINTS = {
+		"/api/articles",
+		"/api/articles/popular"
+	};
+	private static final String[] AUTH_ENDPOINTS = {
+		"/api/users/signup",
+		"/api/auth/login",
+		"/api/auth/refresh"
+	};
+
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
