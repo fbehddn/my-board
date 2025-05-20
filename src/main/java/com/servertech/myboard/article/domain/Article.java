@@ -38,6 +38,7 @@ public class Article extends BaseTimeEntity {
 	@OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Comment> comments;
 
+	@Builder.Default
 	@Column(nullable = false)
 	private long likeCount = 0L;
 
