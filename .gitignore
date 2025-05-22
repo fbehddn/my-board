@@ -38,3 +38,6 @@ out/
 
 # Ignore YAML files
 *.yml
+
+# Ignore CNF files
+*.cnf

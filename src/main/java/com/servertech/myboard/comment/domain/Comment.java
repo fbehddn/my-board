@@ -33,6 +33,7 @@ public class Comment extends BaseTimeEntity {
 	@JoinColumn(name = "article_id", nullable = false)
 	private Article article;
 
+	@Builder.Default
 	@Column(nullable = false)
 	private long likeCount = 0L;
 
