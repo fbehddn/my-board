@@ -22,12 +22,12 @@ public class ArticleLikeJpaAdapter implements ArticleLikeRepository {
 	}
 
 	@Override
-	public boolean existsByArticleIdAndUserId(Long articleId, Long userId) {
-		return articleLikeJpaRepository.existsByArticleIdAndUserId(articleId, userId);
+	public void deleteByArticleIdAndUserId(Long articleId, Long userId) {
+		articleLikeJpaRepository.deleteByArticleIdAndUserId(articleId, userId);
 	}
 
 	@Override
-	public void deleteByArticleIdAndUserId(Long articleId, Long userId) {
-		articleLikeJpaRepository.deleteByArticleIdAndUserId(articleId, userId);
+	public void insertIgnore(Long articleId, Long userId) {
+		articleLikeJpaRepository.insertIgnore(articleId, userId);
 	}
 }
