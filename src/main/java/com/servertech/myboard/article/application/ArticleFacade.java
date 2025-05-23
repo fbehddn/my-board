@@ -8,6 +8,7 @@ import com.servertech.myboard.article.application.dto.response.ArticleResponse;
 import com.servertech.myboard.article.application.command.ArticleCommandService;
 import com.servertech.myboard.article.application.query.ArticleQueryService;
 import com.servertech.myboard.article.domain.Article;
+import com.servertech.myboard.like.article.application.ArticleLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,6 +24,7 @@ import java.util.List;
 public class ArticleFacade {
 	private final ArticleQueryService articleQueryService;
 	private final ArticleCommandService articleCommandService;
+	private final ArticleLikeService articleLikeService;
 
 	@Cacheable(value = "articles::all", key = "'p:' + #pageable.pageNumber + ':s:' + #pageable.pageSize")
 	public ArticleListResponse findAll(Pageable pageable) {
@@ -34,20 +36,22 @@ public class ArticleFacade {
 		return ArticleListResponse.from(response);
 	}
 
-	@Cacheable(value = "articles::popular", key = "'p:' + #pageable.pageNumber + ':s:' + #pageable.pageSize")
-	public ArticleListResponse findPopular(Pageable pageable) {
-		Page<Article> articles = articleQueryService.findAllByPopular(pageable);
-		List<ArticleResponse> response = articles.stream()
-			.map(ArticleResponse::from)
-			.toList();
+//	@Cacheable(value = "articles::popular", key = "'p:' + #pageable.pageNumber + ':s:' + #pageable.pageSize")
+//	public ArticleListResponse findPopular(Pageable pageable) {
+//		Page<Article> articles = articleQueryService.findAllByPopular(pageable);
+//		List<ArticleResponse> response = articles.stream()
+//			.map(ArticleResponse::from)
+//			.toList();
+//
+//		return ArticleListResponse.from(response);
+//	}
 
-		return ArticleListResponse.from(response);
-	}
-
+	//	@Cacheable(value = "articles", key = "'id:' + #id")
 	public ArticleDetailResponse find(Long id) {
 		Article article = articleQueryService.find(id);
+		long likeCount = articleLikeService.getLikeCount(id);
 
-		return ArticleDetailResponse.from(article);
+		return ArticleDetailResponse.from(article, likeCount);
 	}
 
 	@Caching(evict = {

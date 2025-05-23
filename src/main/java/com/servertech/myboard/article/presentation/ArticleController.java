@@ -34,13 +34,13 @@ public class ArticleController {
 		return ResponseEntity.ok(response);
 	}
 
-	@GetMapping("/popular")
-	public ResponseEntity<ArticleListResponse> getPopularArticles(@RequestParam(defaultValue = "0") int page,
-																  @RequestParam(defaultValue = "10") int size) {
-		Pageable pageable = PageRequest.of(page, size);
-		ArticleListResponse response = articleFacade.findPopular(pageable);
-		return ResponseEntity.ok(response);
-	}
+//	@GetMapping("/popular")
+//	public ResponseEntity<ArticleListResponse> getPopularArticles(@RequestParam(defaultValue = "0") int page,
+//																  @RequestParam(defaultValue = "10") int size) {
+//		Pageable pageable = PageRequest.of(page, size);
+//		ArticleListResponse response = articleFacade.findPopular(pageable);
+//		return ResponseEntity.ok(response);
+//	}
 
 	@PostMapping
 	public ResponseEntity<ArticleResponse> createArticle(@RequestBody CreateArticleRequest request,

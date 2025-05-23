@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ArticleRepository {
 	Page<Article> findAll(Pageable pageable);
 
-	Page<Article> findAllByOrderByLikeCountDesc(Pageable pageable);
+//	Page<Article> findAllByOrderByLikeCountDesc(Pageable pageable);
 
 	Optional<Article> find(long id);
 
