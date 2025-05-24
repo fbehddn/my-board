@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArticleJpaRepository extends JpaRepository<Article, Long> {
-	Page<Article> findAllByOrderByLikeCountDesc(Pageable pageable);
+//	Page<Article> findAllByOrderByLikeCountDesc(Pageable pageable);
 }

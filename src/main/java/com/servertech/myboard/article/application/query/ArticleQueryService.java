@@ -20,10 +20,10 @@ public class ArticleQueryService {
 		return articleRepository.findAll(pageable);
 	}
 
-	@Transactional(readOnly = true)
-	public Page<Article> findAllByPopular(Pageable pageable) {
-		return articleRepository.findAllByOrderByLikeCountDesc(pageable);
-	}
+//	@Transactional(readOnly = true)
+//	public Page<Article> findAllByPopular(Pageable pageable) {
+//		return articleRepository.findAllByOrderByLikeCountDesc(pageable);
+//	}
 
 	@Transactional(readOnly = true)
 	public Article find(Long id) {

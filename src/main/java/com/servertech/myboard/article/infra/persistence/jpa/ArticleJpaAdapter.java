@@ -19,10 +19,10 @@ public class ArticleJpaAdapter implements ArticleRepository {
 		return articleJpaRepository.findAll(pageable);
 	}
 
-	@Override
-	public Page<Article> findAllByOrderByLikeCountDesc(Pageable pageable) {
-		return articleJpaRepository.findAllByOrderByLikeCountDesc(pageable);
-	}
+//	@Override
+//	public Page<Article> findAllByOrderByLikeCountDesc(Pageable pageable) {
+//		return articleJpaRepository.findAllByOrderByLikeCountDesc(pageable);
+//	}
 
 	@Override
 	public Optional<Article> find(long id) {
