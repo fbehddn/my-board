@@ -1,30 +1,31 @@
 package com.servertech.myboard.article.application.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.servertech.myboard.article.domain.Article;
-import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Builder
-public record ArticleDetailResponse(
-	Long id,
-	String title,
-	String content,
-	String author,
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ArticleDetailResponse {
+	private Long id;
+	private String title;
+	private String content;
+	private String author;
+	private LocalDateTime updatedAt;
+	private long likeCount;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-	LocalDateTime updatedAt,
-	long likeCount
-) {
 	public static ArticleDetailResponse from(Article article, Long likeCount) {
-		return ArticleDetailResponse.builder()
-			.id(article.getId())
-			.title(article.getTitle())
-			.content(article.getContent())
-			.author(article.getAuthor())
-			.updatedAt(article.getUpdatedAt())
-			.likeCount(likeCount)
-			.build();
+		return new ArticleDetailResponse(
+			article.getId(),
+			article.getTitle(),
+			article.getContent(),
+			article.getAuthor(),
+			article.getUpdatedAt(),
+			likeCount
+		);
 	}
 }

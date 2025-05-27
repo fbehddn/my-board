@@ -40,7 +40,7 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
     //swagger
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
 
     //redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -48,7 +48,11 @@ dependencies {
     //monitor
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+
+    //자바 역직렬화
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 }
+
 
 tasks.named('test') {
     useJUnitPlatform()
