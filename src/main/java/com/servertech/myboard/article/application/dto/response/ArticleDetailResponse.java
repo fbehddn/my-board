@@ -1,13 +1,12 @@
 package com.servertech.myboard.article.application.dto.response;
 
 import com.servertech.myboard.article.domain.Article;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ArticleDetailResponse {
@@ -19,13 +18,13 @@ public class ArticleDetailResponse {
 	private long likeCount;
 
 	public static ArticleDetailResponse from(Article article, Long likeCount) {
-		return new ArticleDetailResponse(
-			article.getId(),
-			article.getTitle(),
-			article.getContent(),
-			article.getAuthor(),
-			article.getUpdatedAt(),
-			likeCount
-		);
+		return ArticleDetailResponse.builder()
+			.id(article.getId())
+			.title(article.getTitle())
+			.content(article.getContent())
+			.author(article.getAuthor())
+			.updatedAt(article.getUpdatedAt())
+			.likeCount(likeCount)
+			.build();
 	}
 }

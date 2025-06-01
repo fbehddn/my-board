@@ -1,5 +1,6 @@
 package com.servertech.myboard.global.config;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -46,12 +47,12 @@ public class RedisConfig {
 			.allowIfBaseType(Object.class)
 			.build();
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.registerModule(new JavaTimeModule());
-		objectMapper.activateDefaultTyping(ptv, ObjectMapper.DefaultTyping.NON_FINAL);
-		return objectMapper;
+		return new ObjectMapper()
+			.registerModule(new JavaTimeModule())
+			.activateDefaultTyping(ptv, ObjectMapper.DefaultTyping.NON_FINAL);
 	}
 
+	//스프링 캐시(@EnableCaching)는 기본적으로 CacheManager Bean을 읽으려하지만, 구체 인스턴스로 빈을 등록해도 문제가없다. (동시에 사용할 경우 추가 처리 필요)
 	@Bean
 	public RedisCacheManager redisCacheManager(RedisConnectionFactory connectionFactory) {
 		RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
