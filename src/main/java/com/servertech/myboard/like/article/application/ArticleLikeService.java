@@ -23,7 +23,8 @@ public class ArticleLikeService {
 
 	@Caching(evict = {
 		@CacheEvict(value = "articles::all", allEntries = true),
-		@CacheEvict(value = "articles::popular", allEntries = true)
+		@CacheEvict(value = "articles::popular", allEntries = true),
+		@CacheEvict(value = "articles::detail", key = "'id:' + #articleId")
 	})
 	@Transactional(readOnly = true)
 	public void likeArticle(Long articleId, Long userId) {
