@@ -40,7 +40,10 @@ public class SecurityConfig {
 	private static final String ACTUATOR_PATTERN = "/actuator/**";
 	private static final String[] SWAGGER_PATTERNS = {
 		"/swagger-ui/**",
-		"/v3/api-docs/**"
+		"/v3/api-docs/**",
+		"/swagger-resources/**",
+		"/webjars/**",
+		"/swagger-ui.html"
 	};
 	private static final String[] STATIC_RESOURCES_PATTERNS = {
 		"/img/**",
@@ -55,8 +58,7 @@ public class SecurityConfig {
 		"/"
 	};
 	private static final String[] PUBLIC_ENDPOINTS = {
-		"/api/articles",
-		"/api/articles/popular"
+		"/api/articles/**",
 	};
 	private static final String[] AUTH_ENDPOINTS = {
 		"/api/users/signup",

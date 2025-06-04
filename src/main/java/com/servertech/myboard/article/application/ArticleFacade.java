@@ -46,7 +46,7 @@ public class ArticleFacade {
 //		return ArticleListResponse.from(response);
 //	}
 
-	//	@Cacheable(value = "articles", key = "'id:' + #id")
+	@Cacheable(value = "articles::detail", key = "'id:' + #id")
 	public ArticleDetailResponse find(Long id) {
 		Article article = articleQueryService.find(id);
 		long likeCount = articleLikeService.getLikeCount(id);
