@@ -3,7 +3,7 @@ package com.servertech.myboard.like.article.application;
 import com.servertech.myboard.article.domain.ArticleRepository;
 import com.servertech.myboard.global.exception.EntityNotFoundException;
 import com.servertech.myboard.like.article.LikeChange;
-import com.servertech.myboard.like.article.LikeChangeQueue;
+import com.servertech.myboard.like.article.LikeChangePublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Caching;
@@ -19,7 +19,7 @@ public class ArticleLikeService {
 
 	private final ArticleRepository articleRepository;
 	private final StringRedisTemplate redisTemplate;
-	private final LikeChangeQueue likeChangeQueue;
+	private final LikeChangePublisher likeChangePublisher;
 
 	@Caching(evict = {
 		@CacheEvict(value = "articles::all", allEntries = true),
@@ -37,7 +37,9 @@ public class ArticleLikeService {
 		if (!added) {
 			ops.remove(userId.toString());
 		}
-		likeChangeQueue.enqueue(new LikeChange(articleId, userId, added));
+		
+		LikeChange change = new LikeChange(articleId, userId, added);
+		likeChangePublisher.publish(change);
 	}
 
 	public long getLikeCount(Long articleId) {
