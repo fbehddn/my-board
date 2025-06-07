@@ -31,6 +31,7 @@ public class SecurityConfig {
 				.requestMatchers(PERMIT_ALL_PATTERNS).permitAll()
 				.requestMatchers(PUBLIC_ENDPOINTS).permitAll()
 				.requestMatchers(AUTH_ENDPOINTS).permitAll()
+				.requestMatchers(KAFKA_TEST).permitAll()
 				.anyRequest().authenticated()
 			)
 			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -38,6 +39,7 @@ public class SecurityConfig {
 	}
 
 	private static final String ACTUATOR_PATTERN = "/actuator/**";
+	private static final String KAFKA_TEST = "/ping/**";
 	private static final String[] SWAGGER_PATTERNS = {
 		"/swagger-ui/**",
 		"/v3/api-docs/**",
