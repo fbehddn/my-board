@@ -1,5 +1,6 @@
-package com.servertech.myboard.like.article;
+package com.servertech.myboard.like.article.infra.kafka;
 
+import com.servertech.myboard.like.article.application.dto.LikeChange;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;

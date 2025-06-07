@@ -2,8 +2,8 @@ package com.servertech.myboard.like.article.application;
 
 import com.servertech.myboard.article.domain.ArticleRepository;
 import com.servertech.myboard.global.exception.EntityNotFoundException;
-import com.servertech.myboard.like.article.LikeChange;
-import com.servertech.myboard.like.article.LikeChangePublisher;
+import com.servertech.myboard.like.article.application.dto.LikeChange;
+import com.servertech.myboard.like.article.infra.kafka.LikeChangePublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Caching;

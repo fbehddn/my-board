@@ -1,6 +1,6 @@
-package com.servertech.myboard.global;
+package com.servertech.myboard.like.article.infra.kafka;
 
-import com.servertech.myboard.like.article.LikeChange;
+import com.servertech.myboard.like.article.application.dto.LikeChange;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

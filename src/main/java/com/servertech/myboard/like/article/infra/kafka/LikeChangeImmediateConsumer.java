@@ -1,4 +1,4 @@
-package com.servertech.myboard.global;
+package com.servertech.myboard.like.article.infra.kafka;
 
 import com.servertech.myboard.like.article.LikeChange;
 import com.servertech.myboard.like.article.domain.ArticleLikeRepository;
