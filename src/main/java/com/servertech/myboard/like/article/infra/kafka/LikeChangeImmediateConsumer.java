@@ -1,6 +1,6 @@
 package com.servertech.myboard.like.article.infra.kafka;
 
-import com.servertech.myboard.like.article.LikeChange;
+import com.servertech.myboard.like.article.application.dto.LikeChange;
 import com.servertech.myboard.like.article.domain.ArticleLikeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ public class LikeChangeImmediateConsumer {
 
 	@KafkaListener(
 		topics = "like-change",
-		groupId = "like-immediate-group"
+		groupId = "${spring.kafka.consumer.group-id}"
 	)
 	@Transactional
 	public void listen(LikeChange likeChange) {

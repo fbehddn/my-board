@@ -1,9 +1,10 @@
 package com.servertech.myboard.global.config;
 
-import com.servertech.myboard.like.article.LikeChange;
+import com.servertech.myboard.like.article.application.dto.LikeChange;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.ConsumerFactory;
@@ -15,13 +16,15 @@ import java.util.Map;
 
 @Configuration
 public class KafkaRewindConfig {
+
+	@Value("${kafka.rewind.group-id}")
+	private String warmupGroupId;
+
 	@Bean
 	public ConsumerFactory<String, LikeChange> rewindConsumerFactory() {
 		Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
-		// 워밍업 전용 그룹 아이디
-		props.put(ConsumerConfig.GROUP_ID_CONFIG, "like-warmup-group");
-		// 반드시 earliest로 설정 → 토픽 처음부터 읽음
+		props.put(ConsumerConfig.GROUP_ID_CONFIG, warmupGroupId);
 		props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
 		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
