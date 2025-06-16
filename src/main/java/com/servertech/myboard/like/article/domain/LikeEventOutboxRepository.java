@@ -1,9 +1,7 @@
 package com.servertech.myboard.like.article.domain;
 
+import com.servertech.myboard.like.article.application.event.LikeChangeEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
 public interface LikeEventOutboxRepository extends JpaRepository<LikeEventOutbox, Long> {
-	List<LikeEventOutbox> findByStatus(EventStatus eventStatus);
 }
