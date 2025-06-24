@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class LikeChangePublisher {
+public class LikeEventPublisher {
 	private final KafkaTemplate<String, LikeChange> kafkaTemplate;
 	private static final String TOPIC = "like-change";
 
-	public void publish(LikeChange change) {
+	public void publishLikeEvent(LikeChange change) {
 		kafkaTemplate.send(TOPIC, change.articleId().toString(), change);
 	}
 }

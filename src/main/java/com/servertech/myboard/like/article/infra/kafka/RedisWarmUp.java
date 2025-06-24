@@ -37,7 +37,7 @@ public class RedisWarmUp {
 
 		//레디스에 데이터가 없으면
 		List<PartitionInfo> partitions = rewindConsumer.partitionsFor(TOPIC);
-		if (partitions == null && partitions.isEmpty()) {
+		if (partitions == null || partitions.isEmpty()) {
 			return;
 		}
 

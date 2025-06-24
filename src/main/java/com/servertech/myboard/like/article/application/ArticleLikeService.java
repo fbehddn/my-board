@@ -3,10 +3,10 @@ package com.servertech.myboard.like.article.application;
 import com.servertech.myboard.article.domain.ArticleRepository;
 import com.servertech.myboard.global.exception.EntityNotFoundException;
 import com.servertech.myboard.like.article.application.dto.LikeChange;
-import com.servertech.myboard.like.article.infra.kafka.LikeChangePublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -19,31 +19,27 @@ public class ArticleLikeService {
 
 	private final ArticleRepository articleRepository;
 	private final StringRedisTemplate redisTemplate;
-	private final LikeChangePublisher likeChangePublisher;
+	private final ApplicationEventPublisher eventPublisher;
 
 	@Caching(evict = {
 		@CacheEvict(value = "articles::all", allEntries = true),
 		@CacheEvict(value = "articles::popular", allEntries = true),
 		@CacheEvict(value = "articles::detail", key = "'id:' + #articleId")
 	})
-	@Transactional(readOnly = true)
+	@Transactional
 	public void likeArticle(Long articleId, Long userId) {
 		articleRepository.find(articleId).orElseThrow(() -> new EntityNotFoundException("Article not found"));
 
-		String key = KEY_PREFIX + articleId;
-		BoundSetOperations<String, String> ops = redisTemplate.boundSetOps(key);
+		BoundSetOperations<String, String> ops = redisTemplate.boundSetOps(KEY_PREFIX + articleId);
 
 		boolean added = ops.add(userId.toString()) == 1;
-		if (!added) {
-			ops.remove(userId.toString());
-		}
-		
+		if (!added) ops.remove(userId.toString());
+
 		LikeChange change = new LikeChange(articleId, userId, added);
-		likeChangePublisher.publish(change);
+		eventPublisher.publishEvent(change);
 	}
 
 	public long getLikeCount(Long articleId) {
-		String key = KEY_PREFIX + articleId;
-		return redisTemplate.opsForSet().size(key);
+		return redisTemplate.opsForSet().size(KEY_PREFIX + articleId);
 	}
 }
