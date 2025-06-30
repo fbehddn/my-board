@@ -25,7 +25,7 @@ public class JwtProvider {
 	private final static String TOKEN_PREFIX = "Bearer ";
 
 	public String generateAccessToken(String email) {
-		return makeToken(Duration.ofMinutes(15), email);
+		return makeToken(Duration.ofMinutes(60), email);
 	}
 
 	public String generateRefreshToken(String email) {
