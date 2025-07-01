@@ -16,18 +16,8 @@ public class ArticleLikeJpaAdapter implements ArticleLikeRepository {
 	}
 
 	@Override
-	public Long countByArticleId(Long articleId) {
-		return articleLikeJpaRepository.countByArticleId(articleId);
-	}
-
-	@Override
 	public void deleteByArticleIdAndUserId(Long articleId, Long userId) {
 		articleLikeJpaRepository.deleteByArticleIdAndUserId(articleId, userId);
-	}
-
-	@Override
-	public void insertIgnore(Long articleId, Long userId) {
-		articleLikeJpaRepository.insertIgnore(articleId, userId);
 	}
 
 	@Override
