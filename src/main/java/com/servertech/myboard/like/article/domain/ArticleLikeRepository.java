@@ -10,4 +10,6 @@ public interface ArticleLikeRepository {
 	void deleteByArticleIdAndUserId(Long articleId, Long userId);
 
 	void insertIgnore(@Param("articleId") Long articleId, @Param("userId") Long userId);
+
+	boolean existsByArticleIdAndUserId(Long articleId, Long userId);
 }
