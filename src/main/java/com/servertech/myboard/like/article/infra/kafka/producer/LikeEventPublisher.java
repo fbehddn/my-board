@@ -1,4 +1,4 @@
-package com.servertech.myboard.like.article.infra.kafka;
+package com.servertech.myboard.like.article.infra.kafka.producer;
 
 import com.servertech.myboard.like.article.application.dto.LikeChange;
 import com.servertech.myboard.like.article.application.event.LikeEventOutboxService;
@@ -24,26 +24,25 @@ import java.util.concurrent.CompletableFuture;
 public class LikeEventPublisher {
 	private final KafkaTemplate<String, LikeChange> kafkaTemplate;
 	private final LikeEventOutboxService outboxService;
-	//	private final LikeEventOutboxRepository outboxRepository;
 	private static final String TOPIC = "like-change";
 
 	@Async
 	@TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-	public void publishLikeEvent(LikeChange change) {
-//		LikeEventOutbox outbox = outboxRepository.save(LikeEventOutbox.from(change));
-		String key = change.articleId().toString();
-		ProducerRecord<String, LikeChange> record = new ProducerRecord<>(TOPIC, key, change);
+	public void publishLikeEvent(LikeEventOutbox outboxEvent) {
+		LikeChange event = toEvent(outboxEvent);
+		String key = event.articleId().toString();
+		ProducerRecord<String, LikeChange> record = new ProducerRecord<>(TOPIC, key, event);
 		CompletableFuture<SendResult<String, LikeChange>> future = kafkaTemplate.send(record);
 
 		future.whenComplete((result, excepion) -> {
 			if (excepion == null) {
+				outboxService.deleteById(outboxEvent.getId());
 				RecordMetadata meta = result.getRecordMetadata();
 				log.info("send successfully to topic {} partition {} at offset {}",
 					meta.topic(), meta.partition(), meta.offset());
 			} else {
 				log.error("failed to send LikeChange event (articleId={} userId={}): {}",
-					change.articleId(), change.userId(), excepion.getMessage(), excepion);
-				outboxService.saveLikeEvent(change);
+					event.articleId(), event.userId(), excepion.getMessage(), excepion);
 			}
 		});
 	}

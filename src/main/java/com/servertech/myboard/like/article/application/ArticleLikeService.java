@@ -3,11 +3,13 @@ package com.servertech.myboard.like.article.application;
 import com.servertech.myboard.article.domain.ArticleRepository;
 import com.servertech.myboard.global.exception.EntityNotFoundException;
 import com.servertech.myboard.like.article.application.dto.LikeChange;
+import com.servertech.myboard.like.article.application.event.LikeEventOutboxService;
+import com.servertech.myboard.like.article.domain.ArticleLikeRepository;
+import com.servertech.myboard.like.article.domain.LikeEventOutbox;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +20,10 @@ public class ArticleLikeService {
 	private static final String KEY_PREFIX = "article:likes:";
 
 	private final ArticleRepository articleRepository;
-	private final StringRedisTemplate redisTemplate;
+		private final LikeEventOutboxService outboxService;
 	private final ApplicationEventPublisher eventPublisher;
+	private final ArticleLikeRepository articleLikeRepository;
+	private final StringRedisTemplate redisTemplate;
 
 	@Caching(evict = {
 		@CacheEvict(value = "articles::all", allEntries = true),
@@ -29,17 +33,15 @@ public class ArticleLikeService {
 	@Transactional
 	public void likeArticle(Long articleId, Long userId) {
 		articleRepository.find(articleId).orElseThrow(() -> new EntityNotFoundException("Article not found"));
+		boolean alreadyLiked = articleLikeRepository.existsByArticleIdAndUserId(articleId, userId);
+		LikeChange likeChange = new LikeChange(articleId, userId, !alreadyLiked);
 
-		BoundSetOperations<String, String> ops = redisTemplate.boundSetOps(KEY_PREFIX + articleId);
-
-		boolean added = ops.add(userId.toString()) == 1;
-		if (!added) ops.remove(userId.toString());
-
-		LikeChange change = new LikeChange(articleId, userId, added);
-		eventPublisher.publishEvent(change);
+		LikeEventOutbox outboxEvent = outboxService.saveLikeEvent(likeChange);
+		eventPublisher.publishEvent(outboxEvent);
 	}
 
 	public long getLikeCount(Long articleId) {
-		return redisTemplate.opsForSet().size(KEY_PREFIX + articleId);
+		Long count = redisTemplate.opsForSet().size(KEY_PREFIX + articleId);
+		return count != null ? count : 0;
 	}
 }
