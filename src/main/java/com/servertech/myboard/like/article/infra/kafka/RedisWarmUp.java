@@ -2,7 +2,6 @@ package com.servertech.myboard.like.article.infra.kafka;
 
 import com.servertech.myboard.like.article.application.dto.LikeChange;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -19,25 +18,21 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class RedisWarmUp {
 	private static final String TOPIC = "like-change";
 	private final StringRedisTemplate redisTemplate;
-	private final KafkaConsumer<String, LikeChange> rewindConsumer;
+	private final KafkaConsumer<String, LikeChange> warmupConsumer;
 
 	@EventListener(ContextRefreshedEvent.class)
 	public void onStart(ContextRefreshedEvent event) {
-		//Redis 에 "article:likes:*" 같은 키가 남아 있나 확인
-		log.info(">>> RedisWarmUp: ContextRefreshedEvent 발생, 워밍업 시작");
-
 		Set<String> existingKeys = redisTemplate.keys("article:likes:*");
 		if (existingKeys != null && !existingKeys.isEmpty()) {
-			return; //레디스에 데이터가 있으면 rewind 불필요
+			return;
 		}
 
 		//레디스에 데이터가 없으면
-		List<PartitionInfo> partitions = rewindConsumer.partitionsFor(TOPIC);
-		if (partitions == null && partitions.isEmpty()) {
+		List<PartitionInfo> partitions = warmupConsumer.partitionsFor(TOPIC);
+		if (partitions == null || partitions.isEmpty()) {
 			return;
 		}
 
@@ -45,12 +40,12 @@ public class RedisWarmUp {
 			.map(pi -> new TopicPartition(pi.topic(), pi.partition()))
 			.toList();
 
-		rewindConsumer.assign(topicPartitions);
-		rewindConsumer.seekToBeginning(topicPartitions);
+		warmupConsumer.assign(topicPartitions);
+		warmupConsumer.seekToBeginning(topicPartitions);
 
 		//while 루프를 통해 모든 메시지 읽어서 Redis에 복원
 		while (true) {
-			ConsumerRecords<String, LikeChange> records = rewindConsumer.poll(Duration.ofMillis(500));
+			ConsumerRecords<String, LikeChange> records = warmupConsumer.poll(Duration.ofMillis(500));
 			if (records.isEmpty()) break;
 			for (ConsumerRecord<String, LikeChange> r : records) {
 				LikeChange lc = r.value();
@@ -62,6 +57,6 @@ public class RedisWarmUp {
 				}
 			}
 		}
-		rewindConsumer.close();
+		warmupConsumer.close();
 	}
 }

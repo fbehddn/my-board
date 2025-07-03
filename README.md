@@ -1,8 +1,13 @@
 # MyBoard
 
 ## 🛠 개요
-이 저장소는 **Spring Boot**, **JPA**, **Spring Security** 등을 활용해  
+이 저장소는 **Spring Boot**, **JPA**, **Spring Security**, **Redis**, **Kafka** 등을 활용해  
 간단한 게시판 도메인 모델로 구성된 백엔드 기술 스택 연습용 예제 애플리케이션입니다.
+
+## 🗂️ Architecture
+<div align="center">
+  <img src="./docs/architecture.png" alt="ER Diagram with Unique Constraints" width="1000"/>
+</div>
 
 ---
 

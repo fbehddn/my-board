@@ -5,7 +5,6 @@ import com.servertech.myboard.like.article.domain.ArticleLikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-
 @Repository
 @RequiredArgsConstructor
 public class ArticleLikeJpaAdapter implements ArticleLikeRepository {
@@ -17,17 +16,12 @@ public class ArticleLikeJpaAdapter implements ArticleLikeRepository {
 	}
 
 	@Override
-	public Long countByArticleId(Long articleId) {
-		return articleLikeJpaRepository.countByArticleId(articleId);
-	}
-
-	@Override
 	public void deleteByArticleIdAndUserId(Long articleId, Long userId) {
 		articleLikeJpaRepository.deleteByArticleIdAndUserId(articleId, userId);
 	}
 
 	@Override
-	public void insertIgnore(Long articleId, Long userId) {
-		articleLikeJpaRepository.insertIgnore(articleId, userId);
+	public boolean existsByArticleIdAndUserId(Long articleId, Long userId) {
+		return articleLikeJpaRepository.existsByArticleIdAndUserId(articleId, userId);
 	}
 }
